@@ -14,6 +14,7 @@
             box-shadow: 0 4px 8px rgba(163, 36, 36, 0.1);
             width: 300px;
         }
+        
         h2 {
             text-align: center;
             color: #4e4848;
@@ -25,14 +26,15 @@
         .input-group label {
             display: block;
             margin-bottom: 5px;
-            color: #666;
+            color: #343131;
         }
         .input-group input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #605959;
             border-radius: 4px;
             box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
+            
         }
         button {
             width: 100%;
