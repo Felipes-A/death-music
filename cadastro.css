@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container-cadastro {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.container-cadastro h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.campo-form {
+  margin-bottom: 15px;
+}
+
+.campo-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+  font-size: 14px;
+}
+
+.campo-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.campo-form input:focus {
+  border-color: #ff000d; /* Vermelho padrão */
+}
+
+.botao-vermelho {
+  width: 100%;
+  padding: 14px;
+  background-color: #ff000d; /* Cor vermelha */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+}
+
+.botao-vermelho:hover {
+  background-color: #9d060d; /* Tom de vermelho mais escuro ao passar o mouse */
+}
+
+.botao-vermelho:active {
+  transform: scale(0.98);
+}
