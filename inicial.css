@@ -5,12 +5,11 @@ body {
   align-items: center;
   height: 100vh;
 }
-
-
+/*botão de play*/
 .botao {
   width: 29%;
   padding: 14px;
-  background-color: #666666; /* Cor vermelha */
+  background-color: #666666; 
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -24,10 +23,42 @@ right: 20px;
 z-index: 1000;
 }
 
+/*barra de pesquisa*/
 .botao:hover {
   background-color: #000000; 
 }
 
 .botao:active {
   transform: scale(0.98);
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  top: -30px;
+  left: 50%;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #666666;
+  color: rgb(255, 253, 253);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #000000;
 }
