@@ -5,49 +5,7 @@ body {
   align-items: center;
   height: 100vh;
 }
-/*botão do play*/
-.botao-primario {
-  width: 29%;
-  padding: 14px;
-  background-color: #666666; 
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s;
- position:fixed;
-bottom: 20px; 
-}
 
-/*barra de pesquisa*/
-.botao-.botao-primario {
-  background-color: #000000; 
-}
-
-.botao-primario:active {
-  transform: scale(0.98);
-}
-
-.search-container {
-  display: flex;
-  gap: 10px;
-  max-width: 400px;
-  margin: 20px auto;
-}
-
-#searchInput {
-  flex: 1;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  position: absolute;
-  top: 20px; 
-  left: 50%;
-  transform: translateX(-50%);
-}
 
 button {
   padding: 10px 20px;
