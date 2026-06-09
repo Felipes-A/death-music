@@ -7,20 +7,3 @@ body {
 }
 
 
-button {
-  padding: 10px 20px;
-  background-color: #666666;
-  color: rgb(255, 253, 253);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-   position: absolute;
-  top: 20px; 
-  left: 59%;
-  transform: translateX(-50%);
-}
-
-button:hover {
-  background-color: #000000;
-}
