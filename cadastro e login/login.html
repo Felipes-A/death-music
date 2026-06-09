@@ -9,18 +9,52 @@
 <body>
      <div class="login-box">
         <h2>Login</h2>
-        <form>
+        <form id="loginForm">
             <div class="input-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="email" required>
+                <input type="email" id="email" name="email" placeholder="email" required>
             </div>
             <div class="input-group">
                 <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="senha" required>
+                <input type="password" id="password" name="password" placeholder="senha" required>
             </div>
+            <div id="mensagem" style="margin-top: 10px; padding: 10px; display: none; border-radius: 5px;"></div>
             <button type="submit">Entrar</button>
+            <p style="text-align: center; margin-top: 15px;">Não tem conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
         </form>
     </div>
+
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('login.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          const mensagem = document.getElementById('mensagem');
+          mensagem.style.display = 'block';
+          
+          if (data.success) {
+            mensagem.style.backgroundColor = '#4CAF50';
+            mensagem.style.color = 'white';
+            mensagem.textContent = data.message;
+            setTimeout(() => {
+              window.location.href = data.redirect;
+            }, 1500);
+          } else {
+            mensagem.style.backgroundColor = '#f44336';
+            mensagem.style.color = 'white';
+            mensagem.textContent = data.message;
+          }
+        })
+        .catch(error => console.error('Erro:', error));
+      });
+    </script>
 
 </body>
 </html>
