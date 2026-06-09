@@ -28,7 +28,36 @@
     <button type="submit" class="botao-vermelho">Cadastrar</button>
   </form>
 </div>
-
-
 </body>
+<script>
+  document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('cadastro.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      const mensagem = document.getElementById('mensagem');
+      mensagem.style.display = 'block';
+      
+      if (data.success) {
+        mensagem.style.backgroundColor = '#4CAF50';
+        mensagem.style.color = 'white';
+        mensagem.textContent = data.message;
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+      } else {
+        mensagem.style.backgroundColor = '#f44336';
+        mensagem.style.color = 'white';
+        mensagem.textContent = data.message;
+      }
+    })
+    .catch(error => console.error('Erro:', error));
+  });
+</script>
 </html>
