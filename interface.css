@@ -8,3 +8,8 @@ box-sizing: border-box;
     background-color: black;
     color: rgb(255, 0, 0);
  }
+
+ .container{
+    display: flex;
+    height: 100vh;
+ }
