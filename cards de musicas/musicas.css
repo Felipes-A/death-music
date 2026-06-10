@@ -1,0 +1,88 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #000000;
+  color: white;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.player-container {
+  background-color: #494949;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+h2 {
+  margin: 0 0 5px 0;
+  font-size: 24px;
+  color: #ff0000c4;
+}
+
+.artista {
+  color: #cccccc;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-play {
+  background-color: #ff0000;
+  color: white;
+  flex: 1;
+  min-width: 120px;
+}
+
+.btn-play:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+.btn-download {
+  background-color: #333333;
+  color: white;
+  flex: 1;
+  min-width: 120px;
+}
+
+.btn-download:hover {
+  background-color: #555555;
+  transform: scale(1.05);
+}
+
