@@ -11,13 +11,13 @@
             background-color: rgb(255, 255, 255);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(163, 36, 36, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 300px;
         }
         
         h2 {
             text-align: center;
-            color: #4e4848;
+            color: #000000;
             margin-bottom: 20px;
         }
         .input-group {
