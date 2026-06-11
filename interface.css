@@ -30,7 +30,8 @@ box-sizing: border-box;
 
 .nav-libary{
    display: flex;
-   align-content: center;
+   align-items: center;
+   gap: 10px;
 }
 
 .nav-libary i,.nav-libary p{
