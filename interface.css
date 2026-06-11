@@ -11,7 +11,14 @@ box-sizing: border-box;
 
  .container{
     display: flex;
-    justify-content: center;
-    align-items: center;
-   height: 100vh;
+    height: 100vh;
+}
+
+.sidebar{
+   width: 300px;
+   background-color: rgb(255, 255, 255);
+   padding: 24px;
+   padding-bottom: 90px;
+   display: flex;
+   flex-direction: column;
 }
