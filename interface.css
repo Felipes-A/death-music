@@ -60,3 +60,15 @@ gap: 20px;
   font-size: 12px;
   border-radius: 20px;
 }
+
+.nav-playlist p{
+   font-size: 12px;
+}
+
+.nav-footer{
+  color: aliceblue;
+  text-decoration: none;
+  font-size: 12px;
+  margin-right: 12px;
+  margin-bottom: 8px;
+}
