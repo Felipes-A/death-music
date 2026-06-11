@@ -28,11 +28,14 @@ gap: 20px;
    font-size: 24px;
 }
 
-.nav-libraty i{
-   color: aliceblue;
+.nav-libraty {
+   color: rgb(0, 0, 0);
+   font-size: 14px;
+   gap: 10px;
+}
+
+.nav-libraty i, .nav-libraty p{
+   color: rgb(0, 0, 0);
    font-size: 14px;
 }
 
-.nav-libary p{
-   
-}
