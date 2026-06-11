@@ -48,7 +48,11 @@ gap: 20px;
 
 .nav-playlist button{
   background-color: rgb(249, 246, 246);
-  color: aliceblue;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 8px 16px;
+  margin-top: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 20px;
 }
