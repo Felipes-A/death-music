@@ -66,6 +66,13 @@ gap: 20px;
 }
 
 .nav-footer{
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.nav-footer a{
   color: aliceblue;
   text-decoration: none;
   font-size: 12px;
