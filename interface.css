@@ -16,7 +16,7 @@ box-sizing: border-box;
 
 .sidebar{
    width: 300px;
-   background-color: rgb(255, 255, 255);
+   background-color: rgb(255, 0, 0);
    padding: 24px;
    padding-bottom: 90px;
    display: flex;
@@ -52,4 +52,6 @@ box-sizing: border-box;
    border: none;
    padding: 8px 16px;
    margin-top: pointer;
+   font-size: 12px;
+   border-radius: 20px;
 }
