@@ -9,7 +9,7 @@ font-family: "Cinzel", serif;
 
  body{
     background-color: rgb(0, 0, 0);
-    color: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
  }
 
 .container{
@@ -72,7 +72,7 @@ gap: 20px;
 }
 
 .nav-footer a{
-  color: rgb(255, 0, 0);
+  color: rgb(0, 42, 255);
   text-decoration: none;
   font-size: 12px;
   margin-right: 12px;
@@ -81,8 +81,8 @@ gap: 20px;
 
 .nav-lang-button{
   background-color: transparent;
-  border: 1px solid #ff0000;
-  color: #ff0000;
+  border: 1px solid #ffffff;
+  color: #ffffff;
   padding: 8px 12px;
   margin-top: 16px;
   cursor: pointer;
