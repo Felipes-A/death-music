@@ -16,19 +16,4 @@ audio {
   margin: 15px 0;
 }
 
-/* Estilização do Botão de Download */
-.btn-download {
-  background-color: #1abc9c;
-  color: #fff;
-  padding: 12px 20px;
-  text-decoration: none;
-  border-radius: 25px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  text-align: center;
-}
 
-.btn-download:hover {
-  background-color: #16a085;
-}
