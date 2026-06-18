@@ -24,37 +24,7 @@
         </form>
     </div>
 
-    <script>
-      document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        
-        fetch('login.php', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          const mensagem = document.getElementById('mensagem');
-          mensagem.style.display = 'block';
-          
-          if (data.success) {
-            mensagem.style.backgroundColor = '#4CAF50';
-            mensagem.style.color = 'white';
-            mensagem.textContent = data.message;
-            setTimeout(() => {
-              window.location.href = data.redirect;
-            }, 1500);
-          } else {
-            mensagem.style.backgroundColor = '#f44336';
-            mensagem.style.color = 'white';
-            mensagem.textContent = data.message;
-          }
-        })
-        .catch(error => console.error('Erro:', error));
-      });
-    </script>
+   
 
 </body>
 </html>
