@@ -16,4 +16,25 @@ audio {
   margin: 15px 0;
 }
 
+#botaoPlay {
+  background-color: #1ed760; /* Cor verde estilo Spotify */
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#botaoPlay:hover {
+  background-color: #1aa34a;
+  transform: scale(1.05); /* Efeito de aumento leve */
+}
+
+#botaoPlay:active {
+  transform: scale(0.98);
+}
 
