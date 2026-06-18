@@ -7,7 +7,7 @@ btnMusica.addEventListener("click", () => {
         musica.play();
     } else {
         musica.pause();musica.addEventListener("play");
-musica.addEventListener("pause");
+        musica.addEventListener("pause");
     }
 });
  
