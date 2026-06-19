@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #000000;
+  background-color: #262626;
   color: white;
   padding: 40px 20px;
   margin: 0;
@@ -16,7 +16,7 @@ body {
 }
 
 .player-container {
-  background-color: #494949;
+  background-color: #4b4b4b;
   padding: 30px;
   border-radius: 15px;
   text-align: center;
@@ -32,7 +32,7 @@ body {
 h2 {
   margin: 0 0 5px 0;
   font-size: 24px;
-  color: #ff0000c4;
+  color: #ffffffc4;
 }
 
 .artista {
@@ -63,7 +63,7 @@ h2 {
 }
 
 .btn-play {
-  background-color: #ff0000;
+  background-color: #b71717;
   color: white;
   flex: 1;
   min-width: 120px;
