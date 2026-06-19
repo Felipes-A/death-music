@@ -48,7 +48,7 @@ h2 {
   flex-wrap: wrap;
 }
 
-.btn {
+.botaoplay , .btn-download{
   padding: 12px 25px;
   border: none;
   border-radius: 8px;
@@ -62,14 +62,14 @@ h2 {
   transition: all 0.3s ease;
 }
 
-.btn-play {
+.botaoPlay {
   background-color: #b71717;
   color: white;
   flex: 1;
   min-width: 120px;
 }
 
-.btn-play:hover {
+.botaoPlay:hover {
   background-color: #cc0000;
   transform: scale(1.05);
 }
