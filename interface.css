@@ -90,7 +90,15 @@ gap: 20px;
   cursor: pointer;
   border-radius: 20px;
 }
-.cards-container {
+.cards-container1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.cards-container2 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 30px;
