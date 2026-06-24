@@ -1,172 +1,175 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-*{
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: "Montserrat", serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", serif;
 }
 
- body{
+body {
     background-color: rgb(35, 34, 34);
     color: rgb(255, 255, 255);
- }
-
-.container{
-  display: flex;
-  height: 100vh;
 }
 
-.sidebar{
-width: 300px;
-background-color: rgb(47, 47, 47);
-padding: 24px;
-padding-bottom: 90px;
-display: flex;
-flex-direction: column;
-gap: 20px;
+.container {
+    display: flex;
+    min-height: 100vh;
 }
 
-.nav-logo i{
-   font-size: 24px;
+.sidebar {
+    width: 300px;
+    background-color: rgb(47, 47, 47);
+    padding: 24px;
+    padding-bottom: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.nav-libraty {
-   display: flex;
-   align-items: center;
-   gap: 10px;
+.nav-logo i {
+    font-size: 24px;
 }
 
-.nav-libraty i, .nav-libraty p{
-   color: #b7b3b6; 
-   font-size: 14px;
-   cursor: pointer;
+.nav-library {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.nav-playlist{
-  background-color: rgb(0, 0, 0);
-  padding: 16px;
-  border-radius: 8px;
+.nav-library i,
+.nav-library p {
+    color: #b7b3b6;
+    font-size: 14px;
+    cursor: pointer;
 }
 
-.nav-playlist button{
-  background-color: rgb(249, 246, 246);
-  color: rgb(0, 0, 0);
-  border: none;
-  padding: 8px 16px;
-  margin-top: 16px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 20px;
+.nav-playlist {
+    background-color: rgb(0, 0, 0);
+    padding: 16px;
+    border-radius: 8px;
 }
 
-.nav-playlist p{
-   font-size: 12px;
+.nav-playlist button {
+    background-color: rgb(249, 246, 246);
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 8px 16px;
+    margin-top: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 20px;
 }
 
-.nav-footer{
-  margin-top: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.nav-playlist p {
+    font-size: 12px;
 }
 
-.nav-footer a{
-  color: rgb(0, 174, 255);
-  text-decoration: none;
-  font-size: 12px;
-  margin-right: 12px;
-  margin-bottom: 8px;
-  font-weight: 1000;
+.nav-footer {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
-.nav-lang-button{
-  background-color: transparent;
-  border: 1px solid #ffffff;
-  color: #ffffff;
-  padding: 8px 12px;
-  margin-top: 16px;
-  cursor: pointer;
-  border-radius: 20px;
+.nav-footer a {
+    color: rgb(0, 174, 255);
+    text-decoration: none;
+    font-size: 12px;
+    margin-right: 12px;
+    margin-bottom: 8px;
+    font-weight: 1000;
 }
+
+.nav-lang-button {
+    background-color: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 8px 12px;
+    margin-top: 16px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
 .cards-container {
-  display: flex;
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 1000px;
-  padding: 20px;
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 1000px;
+    padding: 20px;
 }
 
 .player-container {
-  background-color: #4b4b4b;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #4b4b4b;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .player-container:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
 }
 
 h2 {
-  margin: 0 0 5px 0;
-  font-size: 24px;
-  color: #ffffffc4;
+    margin: 0 0 5px 0;
+    font-size: 24px;
+    color: #ffffffc4;
 }
 
 .artista {
-  color: #cccccc;
-  margin-bottom: 25px;
-  font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 25px;
+    font-size: 14px;
 }
 
 .button-group {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.botaoplay , .btn-download{
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
+.botaoPlay,
+.btn-download {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
 }
 
 .botaoPlay {
-  background-color: #b71717;
-  color: white;
-  flex: 1;
-  min-width: 120px;
+    background-color: #b71717;
+    color: white;
+    flex: 1;
+    min-width: 120px;
 }
 
 .botaoPlay:hover {
-  background-color: #cc0000;
-  transform: scale(1.05);
+    background-color: #cc0000;
+    transform: scale(1.05);
 }
 
 .btn-download {
-  background-color: #333333;
-  color: white;
-  flex: 1;
-  min-width: 120px;
+    background-color: #333333;
+    color: white;
+    flex: 1;
+    min-width: 120px;
 }
 
 .btn-download:hover {
-  background-color: #555555;
-  transform: scale(1.05);
+    background-color: #555555;
+    transform: scale(1.05);
 }
 
