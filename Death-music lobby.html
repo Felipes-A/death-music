@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt_br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +12,11 @@
     <div class="container">
         <nav class="sidebar">
             <div class="nav-logo">
-            <i class="fa-solid fa-music"></i>
+                <i class="fa-solid fa-music"></i>
             </div>
             <div class="nav-library">
                 <i class="fa-solid fa-book"></i>
-                <p>sua bliblioteca +</p>
+                <p>sua biblioteca +</p>
             </div>
             <div class="nav-playlist">
                 <h5>crie sua playlist</h5>
@@ -38,55 +38,54 @@
             <button class="nav-lang-button">
                 <i class="fa-solid fa-globe"></i>
                 português Brasil
-            </butto>
+            </button>
         </nav>
+
         <main>
-           <header>
+            <header>
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input placeholder="o que você quer ouvir?">
             </header>
+
             <section class="content">
                 <h2>artistas</h2>
                 <div class="artists-grid"></div>
 
                 <h2>Álbuns</h2>
-                <div class="albuns-grid"></div>
-            
+                <div class="albums-grid"></div>
+
+                <div class="cards-container">
+                    <div class="player-container">
+                        <h2>DEVILS NEVER CRY</h2>
+                        <p class="artista">スタッフロール</p>
+                        <div class="button-group">
+                            <button class="botaoPlay">▶ Tocar música</button>
+                            <audio class="musica" loop>
+                                <source src="audio/Capcom Sound Team - DEVILS NEVER CRY (スタッフロール) (SPOTISAVER).mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+
+                    <div class="player-container">
+                        <h2>Snot</h2>
+                        <p class="artista">Stoopid</p>
+                        <div class="button-group">
+                            <button class="botaoPlay">▶ Tocar música</button>
+                            <audio class="musica" loop>
+                                <source src="audio/Snot - Stoopid (SPOTISAVER).mp3" type="audio/mpeg">
+                            </audio>
+                            <div class="player-container">
+                            
+                        </div>
+                    
+                    
+                        </div>
+                    </div>
+                </div>
             </section>
-            <body>
-            <div class="cards-container">
-        <!-- Card 1 -->
-        <div class="player-container">
-            <h2>DEVILS NEVER CRY </h2>
-            <p class="artista">スタッフロール </p>
-            
-                <div class="button-group">
-                <button id="botaoPlay">▶ tocar musica</button>
-                <audio id="musica" loop>
-                <source src="/audio/Capcom Sound Team - DEVILS NEVER CRY (スタッフロール) (SPOTISAVER).mp3" type="audio/mp3">
-               </audio>
-            </div>
-            
-            
-             <!-- Card 2 -->
-            <div class="player-container">
-            <h2>Snot </h2>
-            <p class="artista">Stoopid </p>
-            
-            <div class="button-group">
-              <button id="botaoPlay">▶ Tocar Música</button>
-                <audio id="musica" loop>
-                <source src="/audio/Snot - Stoopid (SPOTISAVER).mp3" type="audio/mp3">
-               </audio>
-            </div>
-            
-            
-
-            <script src="script.js"></script>
-        </body>
         </main>
-
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
