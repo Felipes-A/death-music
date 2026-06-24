@@ -67,7 +67,7 @@ body {
 }
 
 .botao-vermelho:hover {
-  background-color: #d7d7d7; /* Tom de vermelho mais escuro ao passar o mouse */
+  background-color: #636363; /* Tom de vermelho mais escuro ao passar o mouse */
 }
 
 .botao-vermelho:active {
