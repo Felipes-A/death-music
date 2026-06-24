@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: #000000;
+  background-color: #282828;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +56,7 @@ body {
 .botao-vermelho {
   width: 100%;
   padding: 14px;
-  background-color: #ff000d; /* Cor vermelha */
+  background-color: #757575; /* Cor vermelha */
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -67,7 +67,7 @@ body {
 }
 
 .botao-vermelho:hover {
-  background-color: #9d060d; /* Tom de vermelho mais escuro ao passar o mouse */
+  background-color: #d7d7d7; /* Tom de vermelho mais escuro ao passar o mouse */
 }
 
 .botao-vermelho:active {
