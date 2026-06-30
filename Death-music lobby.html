@@ -20,9 +20,14 @@
             </div>
             <div class="nav-playlist">
                 <h3>Minha Playlist:</h3>
-                
-                <button onclick="adicionarMusica()">Adicionar à Playlist</button>
+                <button id="adicionar-playlist">Adicionar música à playlist</button>
+                <div class="playlist-controls">
+                    <button id="prev-track">◀</button>
+                    <button id="play-playlist">▶ Reproduzir playlist</button>
+                    <button id="next-track">▶</button>
+                </div>
                 <ul id="lista-playlist"></ul>
+                <p id="playlist-status">Nenhuma música na playlist.</p>
             </div>
             <div class="nav-playlist">
                 <h5>baixe sua musica</h5>
