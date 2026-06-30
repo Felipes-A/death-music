@@ -136,8 +136,8 @@ h2 {
 }
 
 .botaoPlay,
-.btn-download {
-    padding: 12px 25px;
+    .btn-download,
+    .btn-add-playlist {
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -162,12 +162,19 @@ h2 {
     transform: scale(1.05);
 }
 
-.btn-download {
-    background-color: #333333;
-    color: white;
-    flex: 1;
-    min-width: 120px;
-}
+    .btn-add-playlist {
+        background-color: #0b6bff;
+        color: white;
+        min-width: 140px;
+        border-radius: 8px;
+    }
+
+    .btn-add-playlist:hover {
+        background-color: #0f7dff;
+        transform: scale(1.03);
+    }
+
+
 
 .btn-download:hover {
     background-color: #555555;
