@@ -1,207 +1,187 @@
-const botoes = document.querySelectorAll('.botaoPlay');
-const audios = document.querySelectorAll('.musica');
-const adicionarPlaylistButton = document.getElementById('adicionar-playlist');
-const playPlaylistButton = document.getElementById('play-playlist');
-const prevTrackButton = document.getElementById('prev-track');
-const nextTrackButton = document.getElementById('next-track');
-const listaPlaylist = document.getElementById('lista-playlist');
-const playlistStatus = document.getElementById('playlist-status');
+const elements = {
+    add: document.getElementById('adicionar-playlist'),
+    clear: document.getElementById('clear-playlist'),
+    play: document.getElementById('play-playlist'),
+    prev: document.getElementById('prev-track'),
+    next: document.getElementById('next-track'),
+    list: document.getElementById('lista-playlist'),
+    status: document.getElementById('playlist-status'),
+};
 
-const tracks = Array.from(document.querySelectorAll('.player-container')).map((container, index) => ({
+const tracks = Array.from(document.querySelectorAll('.player-container')).map((container) => ({
     title: container.querySelector('h2').textContent.trim(),
     artist: container.querySelector('.artista').textContent.trim(),
     src: container.querySelector('audio source').src,
-    cardAudio: container.querySelector('audio'),
-    cardButton: container.querySelector('.botaoPlay'),
-    container
+    audio: container.querySelector('audio'),
+    button: container.querySelector('.botaoPlay'),
 }));
 
 const playlistAudio = new Audio();
 let playlist = [];
-let currentPlaylistIndex = 0;
+let currentIndex = 0;
 
-function adicionarMusicaPorIndex(index) {
-    playlist.push(tracks[index]);
-    if (playlist.length === 1) {
-        currentPlaylistIndex = 0;
+const setText = (element, text) => element.textContent = text;
+const hasPlaylist = () => playlist.length > 0;
+const currentTrack = () => playlist[currentIndex];
+
+const updateStatus = () => {
+    if (!hasPlaylist()) {
+        return setText(elements.status, 'Nenhuma música na playlist.');
     }
-    renderPlaylist();
-    alert(`"${tracks[index].title}" adicionada à playlist.`);
-}
 
-tracks.forEach((track, index) => {
-    const addButton = document.createElement('button');
-    addButton.className = 'btn-add-playlist';
-    addButton.type = 'button';
-    addButton.textContent = '+ Playlist';
-    addButton.addEventListener('click', () => adicionarMusicaPorIndex(index));
-    const buttonGroup = track.cardButton.parentElement;
-    buttonGroup.appendChild(addButton);
+    const track = currentTrack();
+    setText(elements.status, playlistAudio.paused
+        ? `Pausado: ${track.title} — ${track.artist}`
+        : `Tocando: ${track.title} — ${track.artist}`);
+};
+
+const pauseCards = () => tracks.forEach((track) => {
+    track.audio.pause();
+    setText(track.button, '▶ Tocar música');
 });
 
-function pauseAllCardAudios() {
-    tracks.forEach(track => {
-        if (!track.cardAudio.paused) {
-            track.cardAudio.pause();
-            track.cardButton.textContent = '▶ Tocar música';
-        }
-    });
-}
+const pausePlaylist = () => {
+    playlistAudio.pause();
+    setText(elements.play, '▶ Reproduzir playlist');
+    updateStatus();
+};
 
-function pausePlaylistAudio() {
-    if (!playlistAudio.paused) {
-        playlistAudio.pause();
-    }
-    playPlaylistButton.textContent = '▶ Reproduzir playlist';
-    updatePlaylistStatus();
-}
+const renderPlaylist = () => {
+    elements.list.innerHTML = '';
 
-function updatePlaylistStatus() {
-    if (playlist.length === 0) {
-        playlistStatus.textContent = 'Nenhuma música na playlist.';
-        return;
-    }
-
-    const currentTrack = playlist[currentPlaylistIndex];
-    if (playlistAudio.paused) {
-        playlistStatus.textContent = `Pausado: ${currentTrack.title} — ${currentTrack.artist}`;
-    } else {
-        playlistStatus.textContent = `Tocando: ${currentTrack.title} — ${currentTrack.artist}`;
-    }
-}
-
-function renderPlaylist() {
-    listaPlaylist.innerHTML = '';
-
-    if (playlist.length === 0) {
-        const item = document.createElement('li');
-        item.textContent = 'A playlist está vazia.';
-        listaPlaylist.appendChild(item);
-        updatePlaylistStatus();
-        return;
+    if (!hasPlaylist()) {
+        elements.list.innerHTML = '<li>A playlist está vazia.</li>';
+        return updateStatus();
     }
 
     playlist.forEach((track, index) => {
         const item = document.createElement('li');
-        item.textContent = `${track.title} — ${track.artist}`;
-        item.className = index === currentPlaylistIndex ? 'playlist-item active' : 'playlist-item';
-        item.addEventListener('click', () => {
-            currentPlaylistIndex = index;
-            playCurrentPlaylistTrack();
+        item.className = index === currentIndex ? 'playlist-item active' : 'playlist-item';
+
+        const label = document.createElement('span');
+        label.textContent = `${track.title} — ${track.artist}`;
+        label.addEventListener('click', () => playTrack(index));
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'playlist-delete';
+        remove.textContent = 'Excluir';
+        remove.addEventListener('click', (event) => {
+            event.stopPropagation();
+            removeFromPlaylist(index);
         });
-        listaPlaylist.appendChild(item);
+
+        item.appendChild(label);
+        item.appendChild(remove);
+        elements.list.appendChild(item);
     });
 
-    updatePlaylistStatus();
-}
+    updateStatus();
+};
 
-function playCurrentPlaylistTrack() {
-    if (playlist.length === 0) {
+const playTrack = (index) => {
+    if (!hasPlaylist()) {
         alert('Adicione músicas à playlist antes de reproduzir.');
         return;
     }
 
-    const track = playlist[currentPlaylistIndex];
-    pauseAllCardAudios();
+    currentIndex = index;
+    const track = currentTrack();
 
-    if (playlistAudio.src !== track.src) {
-        playlistAudio.src = track.src;
-    }
+    pauseCards();
+    playlistAudio.src = track.src;
 
-    playlistAudio.play().catch(() => {
-        playPlaylistButton.textContent = '▶ Reproduzir playlist';
-    });
-    playPlaylistButton.textContent = '⏸ Pausar playlist';
+    playlistAudio.play().catch(() => setText(elements.play, '▶ Reproduzir playlist'));
+    setText(elements.play, '⏸ Pausar playlist');
     renderPlaylist();
-}
+};
 
-function togglePlaylistPlay() {
-    if (playlistAudio.paused) {
-        playCurrentPlaylistTrack();
-        return;
+const togglePlaylist = () => {
+    if (!hasPlaylist()) return alert('Adicione músicas à playlist antes de reproduzir.');
+    if (playlistAudio.paused) return playTrack(currentIndex);
+    pausePlaylist();
+};
+
+const nextTrack = () => {
+    if (!hasPlaylist()) return;
+    currentIndex = (currentIndex + 1) % playlist.length;
+    playTrack(currentIndex);
+};
+
+const prevTrack = () => {
+    if (!hasPlaylist()) return;
+    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+    playTrack(currentIndex);
+};
+
+const removeFromPlaylist = (index) => {
+    if (index < 0 || index >= playlist.length) return;
+
+    playlist.splice(index, 1);
+    if (!hasPlaylist()) {
+        pausePlaylist();
+        currentIndex = 0;
+        return renderPlaylist();
     }
 
-    playlistAudio.pause();
-    playPlaylistButton.textContent = '▶ Reproduzir playlist';
-    updatePlaylistStatus();
-}
+    if (currentIndex > index) currentIndex -= 1;
+    if (currentIndex >= playlist.length) currentIndex = playlist.length - 1;
+    if (!playlistAudio.paused) return playTrack(currentIndex);
 
-function playNextTrack() {
-    if (playlist.length === 0) return;
+    renderPlaylist();
+};
 
-    currentPlaylistIndex = (currentPlaylistIndex + 1) % playlist.length;
-    playCurrentPlaylistTrack();
-}
+const clearPlaylist = () => {
+    playlist = [];
+    currentIndex = 0;
+    pausePlaylist();
+    renderPlaylist();
+};
 
-function playPreviousTrack() {
-    if (playlist.length === 0) return;
+const addTrackToPlaylist = (track) => {
+    playlist.push(track);
+    if (playlist.length === 1) currentIndex = 0;
+    renderPlaylist();
+    alert(`"${track.title}" adicionada à playlist.`);
+};
 
-    currentPlaylistIndex = (currentPlaylistIndex - 1 + playlist.length) % playlist.length;
-    playCurrentPlaylistTrack();
-}
-
-playlistAudio.addEventListener('ended', () => {
-    if (playlist.length === 0) return;
-    if (currentPlaylistIndex < playlist.length - 1) {
-        currentPlaylistIndex += 1;
-        playCurrentPlaylistTrack();
-        return;
-    }
-    playlistAudio.pause();
-    playPlaylistButton.textContent = '▶ Reproduzir playlist';
-    updatePlaylistStatus();
-});
-
-function adicionarMusica() {
+const chooseTrack = () => {
     const options = tracks.map((track, index) => `${index + 1}. ${track.title} — ${track.artist}`).join('\n');
-    const escolha = prompt(`Escolha o número da música que deseja adicionar à playlist:\n${options}`);
-    const index = Number(escolha) - 1;
+    const choice = Number(prompt(`Escolha o número da música que deseja adicionar à playlist:\n${options}`)) - 1;
 
-    if (!Number.isInteger(index) || index < 0 || index >= tracks.length) {
-        alert('Escolha inválida. Tente novamente com um número válido.');
-        return;
+    if (!Number.isInteger(choice) || choice < 0 || choice >= tracks.length) {
+        return alert('Escolha inválida. Tente novamente com um número válido.');
     }
 
-    playlist.push(tracks[index]);
-    if (playlist.length === 1) {
-        currentPlaylistIndex = 0;
-    }
-    renderPlaylist();
-    alert(`"${tracks[index].title}" foi adicionada à playlist.`);
-}
+    addTrackToPlaylist(tracks[choice]);
+};
 
-botoes.forEach((botao, index) => {
-    const musica = audios[index];
+tracks.forEach((track) => {
+    const addButton = document.createElement('button');
+    addButton.className = 'btn-add-playlist';
+    addButton.type = 'button';
+    addButton.textContent = '+ Playlist';
+    addButton.addEventListener('click', () => addTrackToPlaylist(track));
+    track.button.parentElement.appendChild(addButton);
 
-    if (!musica) return;
-
-    botao.addEventListener('click', () => {
-        if (!musica.paused) {
-            musica.pause();
-            botao.textContent = '▶ Tocar música';
-            return;
+    track.button.addEventListener('click', () => {
+        if (!track.audio.paused) {
+            track.audio.pause();
+            return setText(track.button, '▶ Tocar música');
         }
 
-        playlistAudio.pause();
-        playPlaylistButton.textContent = '▶ Reproduzir playlist';
-        updatePlaylistStatus();
+        pausePlaylist();
+        pauseCards();
 
-        audios.forEach((audio, audioIndex) => {
-            if (audioIndex !== index) {
-                audio.pause();
-                botoes[audioIndex].textContent = '▶ Tocar música';
-            }
-        });
-
-        musica.play().catch(() => {
-            botao.textContent = '▶ Tocar música';
-        });
-        botao.textContent = '⏸ Pausar';
+        track.audio.play().catch(() => setText(track.button, '▶ Tocar música'));
+        setText(track.button, '⏸ Pausar');
     });
 });
 
-adicionarPlaylistButton.addEventListener('click', adicionarMusica);
-playPlaylistButton.addEventListener('click', togglePlaylistPlay);
-prevTrackButton.addEventListener('click', playPreviousTrack);
-nextTrackButton.addEventListener('click', playNextTrack);
+elements.add.addEventListener('click', chooseTrack);
+elements.clear.addEventListener('click', clearPlaylist);
+elements.play.addEventListener('click', togglePlaylist);
+elements.prev.addEventListener('click', prevTrack);
+elements.next.addEventListener('click', nextTrack);
+
 renderPlaylist();
