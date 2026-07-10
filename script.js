@@ -13,6 +13,10 @@ const tracks = Array.from(document.querySelectorAll('.player-container')).map((c
     src: container.querySelector('audio source').src,
     audio: container.querySelector('audio'),
     button: container.querySelector('.botaoPlay'),
+    progressBar: container.querySelector('.track-progress'),
+    progressFilled: container.querySelector('.track-progress-filled'),
+    currentTimeElement: container.querySelector('.current-time'),
+    durationTimeElement: container.querySelector('.duration-time'),
 }));
 
 const playlistAudio = new Audio();
@@ -22,6 +26,13 @@ let currentIndex = 0;
 const setText = (element, text) => element.textContent = text;
 const hasPlaylist = () => playlist.length > 0;
 const currentTrack = () => playlist[currentIndex];
+
+const formatTime = (time) => {
+    if (Number.isNaN(time) || time === Infinity) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+};
 
 const updateStatus = () => {
     if (!hasPlaylist()) {
@@ -38,6 +49,12 @@ const pauseCards = () => tracks.forEach((track) => {
     track.audio.pause();
     setText(track.button, '▶ Tocar música');
 });
+
+const resetTrackProgress = (track) => {
+    setText(track.currentTimeElement, '0:00');
+    setText(track.durationTimeElement, '0:00');
+    track.progressFilled.style.width = '0%';
+};
 
 const pausePlaylist = () => {
     playlistAudio.pause();
@@ -95,6 +112,23 @@ const playTrack = (index) => {
     renderPlaylist();
 };
 
+const updateTrackProgress = (track) => {
+    setText(track.currentTimeElement, formatTime(track.audio.currentTime));
+    setText(track.durationTimeElement, formatTime(track.audio.duration));
+    if (track.audio.duration > 0) {
+        const percent = (track.audio.currentTime / track.audio.duration) * 100;
+        track.progressFilled.style.width = `${percent}%`;
+    }
+};
+
+const seekTrack = (track, event) => {
+    const rect = track.progressBar.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+    track.audio.currentTime = percent * track.audio.duration;
+    updateTrackProgress(track);
+};
+
 const togglePlaylist = () => {
     if (!hasPlaylist()) return alert('Adicione músicas à playlist antes de reproduzir.');
     if (playlistAudio.paused) return playTrack(currentIndex);
@@ -149,12 +183,38 @@ const chooseTrack = () => {
 };
 
 tracks.forEach((track) => {
+    const resetElements = () => {
+        setText(track.currentTimeElement, '0:00');
+        setText(track.durationTimeElement, formatTime(track.audio.duration));
+        track.progressFilled.style.width = '0%';
+    };
+
+    track.audio.addEventListener('ended', () => {
+        setText(track.button, '▶ Tocar música');
+        resetElements();
+    });
+});
+
+tracks.forEach((track) => {
     const addButton = document.createElement('button');
     addButton.className = 'btn-add-playlist';
     addButton.type = 'button';
     addButton.textContent = '+ Playlist';
     addButton.addEventListener('click', () => addTrackToPlaylist(track));
     track.button.parentElement.appendChild(addButton);
+
+    track.audio.addEventListener('loadedmetadata', () => {
+        setText(track.durationTimeElement, formatTime(track.audio.duration));
+    });
+
+    track.audio.addEventListener('timeupdate', () => updateTrackProgress(track));
+    track.audio.addEventListener('ended', () => {
+        setText(track.button, '▶ Tocar música');
+    });
+
+    track.progressBar.addEventListener('click', (event) => {
+        if (track.audio.duration > 0) seekTrack(track, event);
+    });
 
     track.button.addEventListener('click', () => {
         if (!track.audio.paused) {
