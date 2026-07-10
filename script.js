@@ -1,6 +1,5 @@
 const elements = {
     add: document.getElementById('adicionar-playlist'),
-    clear: document.getElementById('clear-playlist'),
     play: document.getElementById('play-playlist'),
     prev: document.getElementById('prev-track'),
     next: document.getElementById('next-track'),
@@ -131,13 +130,6 @@ const removeFromPlaylist = (index) => {
     renderPlaylist();
 };
 
-const clearPlaylist = () => {
-    playlist = [];
-    currentIndex = 0;
-    pausePlaylist();
-    renderPlaylist();
-};
-
 const addTrackToPlaylist = (track) => {
     playlist.push(track);
     if (playlist.length === 1) currentIndex = 0;
@@ -179,7 +171,6 @@ tracks.forEach((track) => {
 });
 
 elements.add.addEventListener('click', chooseTrack);
-elements.clear.addEventListener('click', clearPlaylist);
 elements.play.addEventListener('click', togglePlaylist);
 elements.prev.addEventListener('click', prevTrack);
 elements.next.addEventListener('click', nextTrack);
