@@ -7,17 +7,22 @@ const elements = {
     status: document.getElementById('playlist-status'),
 };
 
-const tracks = Array.from(document.querySelectorAll('.player-container')).map((container) => ({
-    title: container.querySelector('h2').textContent.trim(),
-    artist: container.querySelector('.artista').textContent.trim(),
-    src: container.querySelector('audio source').src,
-    audio: container.querySelector('audio'),
-    button: container.querySelector('.botaoPlay'),
-    progressBar: container.querySelector('.track-progress'),
-    progressFilled: container.querySelector('.track-progress-filled'),
-    currentTimeElement: container.querySelector('.current-time'),
-    durationTimeElement: container.querySelector('.duration-time'),
-}));
+const addEmptyPlayerButton = document.getElementById('add-empty-player');
+const cardsContainer = document.querySelector('.cards-container');
+
+const tracks = Array.from(document.querySelectorAll('.player-container'))
+    .filter((container) => container.querySelector('audio source'))
+    .map((container) => ({
+        title: container.querySelector('h2').textContent.trim(),
+        artist: container.querySelector('.artista').textContent.trim(),
+        src: container.querySelector('audio source').src,
+        audio: container.querySelector('audio'),
+        button: container.querySelector('.botaoPlay'),
+        progressBar: container.querySelector('.track-progress'),
+        progressFilled: container.querySelector('.track-progress-filled'),
+        currentTimeElement: container.querySelector('.current-time'),
+        durationTimeElement: container.querySelector('.duration-time'),
+    }));
 
 const playlistAudio = new Audio();
 let playlist = [];
@@ -171,6 +176,34 @@ const addTrackToPlaylist = (track) => {
     alert(`"${track.title}" adicionada à playlist.`);
 };
 
+const createEmptyPlayer = () => {
+    const emptyPlayer = document.createElement('div');
+    emptyPlayer.className = 'player-container empty-player';
+    emptyPlayer.innerHTML = `
+        <button class="delete-player-btn" type="button" aria-label="Excluir card">✕</button>
+        <div class="empty-player-placeholder">
+            <i class="fa-solid fa-music"></i>
+            <h2></h2>
+            <p class="artista">Sem música salva</p>
+        </div>
+        <div class="button-group">
+            <button class="botaoPlay" disabled>▶ Tocar música</button>
+        </div>
+        <div class="progress-info">
+            <span class="current-time">0:00</span>
+            <span class="duration-time">0:00</span>
+        </div>
+        <div class="track-progress" role="button" tabindex="0" aria-label="Progresso da música">
+            <div class="track-progress-filled"></div>
+        </div>
+    `;
+
+    const deleteButton = emptyPlayer.querySelector('.delete-player-btn');
+    deleteButton.addEventListener('click', () => emptyPlayer.remove());
+
+    cardsContainer.appendChild(emptyPlayer);
+};
+
 const chooseTrack = () => {
     const options = tracks.map((track, index) => `${index + 1}. ${track.title} — ${track.artist}`).join('\n');
     const choice = Number(prompt(`Escolha o número da música que deseja adicionar à playlist:\n${options}`)) - 1;
@@ -234,5 +267,6 @@ elements.add.addEventListener('click', chooseTrack);
 elements.play.addEventListener('click', togglePlaylist);
 elements.prev.addEventListener('click', prevTrack);
 elements.next.addEventListener('click', nextTrack);
+addEmptyPlayerButton.addEventListener('click', createEmptyPlayer);
 
 renderPlaylist();
