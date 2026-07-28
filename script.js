@@ -202,6 +202,7 @@ const createEmptyPlayer = () => {
     deleteButton.addEventListener('click', () => emptyPlayer.remove());
 
     cardsContainer.appendChild(emptyPlayer);
+    initializeCardCustomization(emptyPlayer);
 };
 
 const chooseTrack = () => {
@@ -214,6 +215,66 @@ const chooseTrack = () => {
 
     addTrackToPlaylist(tracks[choice]);
 };
+
+// Helper: convert rgb(...) to hex, returns null on failure
+function rgbToHex(rgb) {
+    if (!rgb) return null;
+    const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (!m) return null;
+    const r = parseInt(m[1], 10), g = parseInt(m[2], 10), b = parseInt(m[3], 10);
+    return '#' + [r, g, b].map((n) => n.toString(16).padStart(2, '0')).join('');
+}
+
+// Initialize customization UI for any existing cards on load
+document.querySelectorAll('.player-container').forEach(initializeCardCustomization);
+
+// Initialize customization UI for a single card element
+function initializeCardCustomization(card) {
+    if (!card || card.dataset.customInit) return;
+    card.dataset.customInit = '1';
+
+    const settingsBtn = document.createElement('button');
+    settingsBtn.type = 'button';
+    settingsBtn.className = 'card-settings-btn';
+    settingsBtn.title = 'Configurar card';
+    settingsBtn.textContent = '⚙';
+
+    const panel = document.createElement('div');
+    panel.className = 'card-settings-panel';
+    panel.innerHTML = `
+        <div class="settings-row"><label>Fundo: <input type="color" class="color-input bg-color"></label></div>
+    `;
+
+    card.appendChild(settingsBtn);
+    card.appendChild(panel);
+
+    settingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        panel.classList.toggle('open');
+    });
+
+    const colorInput = panel.querySelector('.bg-color');
+    if (colorInput) {
+        colorInput.addEventListener('input', () => {
+            card.style.backgroundColor = colorInput.value;
+        });
+    }
+
+    // initialize inputs from computed styles
+    try {
+        const computed = getComputedStyle(card);
+        const bgVal = rgbToHex(computed.backgroundColor) || '#4b4b4b';
+        const bgInput = panel.querySelector('.bg-color');
+        if (bgInput) bgInput.value = bgVal;
+    } catch (e) {
+        // ignore
+    }
+
+    // close panel when clicking outside
+    document.addEventListener('click', (evt) => {
+        if (!panel.contains(evt.target) && evt.target !== settingsBtn) panel.classList.remove('open');
+    });
+}
 
 tracks.forEach((track) => {
     const resetElements = () => {
