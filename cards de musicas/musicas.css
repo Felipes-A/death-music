@@ -22,6 +22,7 @@ body {
   text-align: center;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
 .player-container:hover {
@@ -85,4 +86,63 @@ h2 {
   background-color: #555555;
   transform: scale(1.05);
 }
+
+/* Settings panel styles */
+.card-settings-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #ffffffc4;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.card-settings-panel {
+  position: absolute;
+  top: 40px;
+  right: 12px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  width: 200px;
+  display: none;
+  z-index: 40;
+}
+
+.card-settings-panel.open {
+  display: block;
+}
+
+.card-settings-panel .settings-row {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.card-settings-panel .color-input {
+  width: 44px;
+  height: 28px;
+  border: none;
+  padding: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.card-settings-panel input[type="range"] {
+  width: 100%;
+}
+
+.card-settings-panel button {
+  margin-right: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.card-settings-panel .apply-settings { background: #2a9d8f; color: #fff; }
+.card-settings-panel .reset-settings { background: #666; color: #fff; }
 
