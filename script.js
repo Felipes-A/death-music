@@ -52,7 +52,18 @@ const fileChooser = (() => {
     document.body.appendChild(input);
     return input;
 })();
+
+const imageChooser = (() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+    document.body.appendChild(input);
+    return input;
+})();
+
 let pendingDownloadCard = null;
+let pendingImageCard = null;
 
 const fmtTime = (value) => {
     if (!Number.isFinite(value)) return '0:00';
@@ -360,6 +371,26 @@ fileChooser.addEventListener('change', (event) => {
     fileChooser.value = '';
 });
 
+imageChooser.addEventListener('change', (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        alert('Selecione uma imagem válida.');
+        imageChooser.value = '';
+        return;
+    }
+
+    if (!pendingImageCard) return;
+    const img = pendingImageCard.querySelector('img');
+    if (img) {
+        img.src = URL.createObjectURL(file);
+    }
+
+    imageChooser.value = '';
+    pendingImageCard = null;
+});
+
 DOM.addTrackButton.addEventListener('click', () => {
     const choice = Number(prompt(
         trackData.map((track, index) => `${index + 1}. ${track.title} — ${track.artist}`).join('\n')
@@ -381,6 +412,7 @@ DOM.addEmptyButton.addEventListener('click', () => {
     emptyCard.className = 'player-container empty-player';
     emptyCard.innerHTML = `
         <button class="delete-player-btn" type="button" aria-label="Excluir card">✕</button>
+        <button class="btn-add-image" type="button">Adicionar imagem</button>
         <div class="empty-player-placeholder">
             <i class="fa-solid fa-music"></i>
             <h2>Sem música</h2>
@@ -404,6 +436,10 @@ DOM.addEmptyButton.addEventListener('click', () => {
     `;
 
     emptyCard.querySelector('.delete-player-btn').addEventListener('click', () => emptyCard.remove());
+    emptyCard.querySelector('.btn-add-image').addEventListener('click', () => {
+        pendingImageCard = emptyCard;
+        imageChooser.click();
+    });
     emptyCard.querySelector('.btn-download').addEventListener('click', () => {
         pendingDownloadCard = emptyCard;
         fileChooser.click();
