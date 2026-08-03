@@ -1,288 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat", serif;
+:root{
+  --bg: #232222;
+  --sidebar: #2f2f2f;
+  --card: #4b4b4b;
+  --accent: #0b6bff;
+  --danger: #b71717;
+  --muted: #b7b3b6;
+  --white: #ffffff;
 }
 
-body {
-    background-color: rgb(35, 34, 34);
-    color: rgb(255, 255, 255);
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Montserrat,system-ui,Arial}
+body{background:var(--bg);color:var(--white)}
 
-.container {
-    display: flex;
-    min-height: 100vh;
-}
+.container{display:flex;min-height:100vh}
 
-.sidebar {
-    width: 300px;
-    background-color: rgb(47, 47, 47);
-    padding: 24px;
-    padding-bottom: 90px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+.sidebar{width:300px;background:var(--sidebar);padding:24px 24px 90px;display:flex;flex-direction:column;gap:20px}
+.nav-logo i{font-size:24px}
+.nav-library{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
 
-.nav-logo i {
-    font-size: 24px;
-}
+.nav-playlist{background:#000;padding:16px;border-radius:8px}
+.nav-playlist button{background:#fafafa;color:#000;border:0;padding:8px 16px;margin-top:12px;border-radius:20px;cursor:pointer}
 
-.nav-library {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.nav-footer{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-around}
+.nav-footer a{color:#00aeff;text-decoration:none;font-size:12px;font-weight:700}
+.nav-lang-button{background:transparent;border:1px solid #fff;color:#fff;padding:8px 12px;border-radius:20px;margin-top:12px}
 
-.nav-library i,
-.nav-library p {
-    color: #b7b3b6;
-    font-size: 14px;
-    cursor: pointer;
-}
+.cards-actions{display:flex;justify-content:flex-end;padding:20px 20px 0;max-width:1200px;margin:0 auto;width:1000px}
+.add-empty-player-btn{background:var(--accent);color:#fff;border:0;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer}
 
-.nav-playlist {
-    background-color: rgb(0, 0, 0);
-    padding: 16px;
-    border-radius: 8px;
-}
+.cards-container{display:flex;flex-wrap:wrap;gap:30px;max-width:1200px;margin:0 auto;width:1000px;padding:20px}
 
-.nav-playlist button {
-    background-color: rgb(249, 246, 246);
-    color: rgb(0, 0, 0);
-    border: none;
-    padding: 8px 16px;
-    margin-top: 16px;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 20px;
-}
+.player-container{background:var(--card);padding:24px;border-radius:15px;text-align:center;box-shadow:0 10px 20px rgba(0,0,0,.3);width:280px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.player-container img{width:100%;height:220px;object-fit:cover;border-radius:12px;margin-bottom:20px;display:block}
+.player-container:hover{transform:translateY(-6px);box-shadow:0 15px 30px rgba(0,0,0,.45)}
+.player-container.empty-player{border:1px dashed rgba(255,255,255,.25)}
+.player-container.empty-player .botaoPlay{opacity:.7;cursor:not-allowed}
+.player-container .delete-player-btn{background:transparent;border:0;color:#fff;font-size:18px;align-self:flex-end}
 
-.nav-playlist p {
-    font-size: 12px;
-}
+.empty-player-placeholder{display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;color:#e8e8e8}
+.empty-player-placeholder i{font-size:36px;color:#d7d7d7}
 
-.nav-footer {
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
+.track-progress{width:100%;height:10px;background:rgba(255,255,255,.12);border-radius:999px;cursor:pointer;margin-top:16px;overflow:hidden}
+.track-progress-filled{width:0;height:100%;background:var(--danger);transition:width .12s linear}
 
-.nav-footer a {
-    color: rgb(0, 174, 255);
-    text-decoration: none;
-    font-size: 12px;
-    margin-right: 12px;
-    margin-bottom: 8px;
-    font-weight: 1000;
-}
+.progress-info{display:flex;justify-content:space-between;font-size:12px;color:#d7d7d7;margin-top:12px}
+h2{margin:0 0 6px 0;font-size:22px;color:rgba(255,255,255,.77)}
+.artista{color:#cccccc;margin-bottom:18px;font-size:14px}
 
-.nav-lang-button {
-    background-color: transparent;
-    border: 1px solid #ffffff;
-    color: #ffffff;
-    padding: 8px 12px;
-    margin-top: 16px;
-    cursor: pointer;
-    border-radius: 20px;
-}
+.button-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn, .botaoPlay, .btn-download, .btn-add-playlist{border:0;border-radius:8px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer}
+.botaoPlay{background:var(--danger);color:#fff}
+.btn-download{background:#333;color:#fff}
+.btn-add-playlist{background:#222;color:#fff}
 
-.cards-actions {
-    display: flex;
-    justify-content: flex-end;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 1000px;
-    padding: 20px 20px 0;
-}
+.download-progress{width:100%;height:8px;background:#444;margin-top:8px;border-radius:6px;overflow:hidden}
+.download-progress-filled{width:0;height:100%;background:#2ecc71;transition:width .2s}
 
-.add-empty-player-btn {
-    background-color: #0b6bff;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.add-empty-player-btn:hover {
-    background-color: #0f7dff;
-    transform: translateY(-2px);
-}
-
-.cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 1000px;
-    padding: 20px;
-}
-
-.player-container {
-    background-color: #4b4b4b;
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-    width: 280px;
-    min-height: 420px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.player-container img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    display: block;
-}
-
-.player-container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-}
-
-.player-container.empty-player {
-    border: 1px dashed rgba(255,255,255,0.25);
-}
-
-.player-container.empty-player .botaoPlay {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.player-container.empty-player .delete-player-btn {
-    align-self: flex-end;
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 18px;
-    cursor: pointer;
-    margin-bottom: 8px;
-}
-
-.player-container.empty-player .empty-player-placeholder {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    color: #e8e8e8;
-}
-
-.player-container.empty-player .empty-player-placeholder i {
-    font-size: 36px;
-    color: #d7d7d7;
-}
-
-.track-progress {
-    width: 100%;
-    height: 10px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 999px;
-    cursor: pointer;
-    margin-top: 16px;
-    overflow: hidden;
-}
-
-.track-progress-filled {
-    width: 0%;
-    height: 100%;
-    background: #b71717;
-    transition: width 0.1s ease;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: 12px;
-    color: #d7d7d7;
-    margin-top: 12px;
-}
-
-.progress-info span {
-    display: inline-block;
-}
-
-h2 {
-    margin: 0 0 5px 0;
-    font-size: 24px;
-    color: #ffffffc4;
-}
-
-.artista {
-    color: #cccccc;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.botaoPlay,
-    .btn-download,
-    .btn-add-playlist {
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-}
-
-.botaoPlay {
-    background-color: #b71717;
-    color: white;
-    flex: 1;
-    min-width: 120px;
-}
-
-.botaoPlay:hover {
-    background-color: #cc0000;
-    transform: scale(1.05);
-}
-
-    .btn-add-playlist {
-        background-color: #0b6bff;
-        color: white;
-        min-width: 140px;
-        border-radius: 8px;
-    }
-
-    .btn-add-playlist:hover {
-        background-color: #0f7dff;
-        transform: scale(1.03);
-    }
-
-
-
-.btn-download:hover {
-    background-color: #555555;
-    transform: scale(1.05);
-}
+.botaoPlay:hover{background-color:#cc0000;transform:scale(1.05)}
+.btn-add-playlist{background:var(--accent);color:#fff;min-width:140px;border-radius:8px}
+.btn-add-playlist:hover{background:#0f7dff;transform:scale(1.03)}
+.btn-download:hover{background:#555;color:#fff;transform:scale(1.05)}
 
