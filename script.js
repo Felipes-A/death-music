@@ -272,8 +272,11 @@ const setupDownloadedMusic = (file, card) => {
     const downloadBar = card.querySelector('.download-progress');
     const downloadFill = card.querySelector('.download-progress-filled');
 
-    trackTitle.textContent = title;
-    trackArtist.textContent = artist;
+    const titleElement = card.querySelector('.track-title');
+    const artistElement = card.querySelector('.artista');
+
+    if (titleElement) titleElement.textContent = title;
+    if (artistElement) artistElement.textContent = artist;
     playButton.disabled = false;
     playlistButton.disabled = false;
 
@@ -382,9 +385,19 @@ imageChooser.addEventListener('change', (event) => {
     }
 
     if (!pendingImageCard) return;
-    const img = pendingImageCard.querySelector('img');
+    const img = pendingImageCard.querySelector('.card-image');
+    const icon = pendingImageCard.querySelector('.image-icon');
+    const title = pendingImageCard.querySelector('.track-title');
+
     if (img) {
         img.src = URL.createObjectURL(file);
+        img.style.display = 'block';
+    }
+    if (icon) {
+        icon.style.display = 'none';
+    }
+    if (title) {
+        title.textContent = 'Escolha uma música para download';
     }
 
     imageChooser.value = '';
@@ -414,8 +427,11 @@ DOM.addEmptyButton.addEventListener('click', () => {
         <button class="delete-player-btn" type="button" aria-label="Excluir card">✕</button>
         <button class="btn-add-image" type="button">Adicionar imagem</button>
         <div class="empty-player-placeholder">
-            <i class="fa-solid fa-music"></i>
-            <h2>Sem música</h2>
+            <div class="image-preview" style="position:relative; width:100%; height:180px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#222;">
+                <img class="card-image" src="" alt="Capa da música" style="display:none; width:100%; height:100%; object-fit:cover;">
+                <i class="fa-solid fa-music image-icon" style="font-size:3rem; color:#999;"></i>
+            </div>
+            <h2 class="track-title" style="margin:12px 0 4px;">Sem música</h2>
             <p class="artista">Sem música salva</p>
         </div>
         <div class="button-group">
