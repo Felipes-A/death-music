@@ -12,6 +12,14 @@
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:Montserrat,system-ui,Arial}
 body{background:var(--bg);color:var(--white)}
+main{flex:1;padding:24px 0 40px}
+header{display:flex;align-items:center;gap:12px;padding:20px 20px 0;max-width:1200px;margin:0 auto;width:1000px}
+header i{font-size:18px;color:#b7b3b6}
+header input{flex:1;border:0;border-radius:999px;padding:12px 16px;background:#3a3a3a;color:#fff;outline:none}
+header input::placeholder{color:#b7b3b6}
+.search-empty-state{display:none;max-width:1200px;margin:0 auto;padding:0 20px;color:#b7b3b6}
+.search-empty-state.visible{display:block}
+.player-container.is-hidden{display:none}
 
 .container{display:flex;min-height:100vh}
 
