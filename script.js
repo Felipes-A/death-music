@@ -7,6 +7,8 @@ const DOM = {
     playlistStatus: document.getElementById('playlist-status'),
     addEmptyButton: document.getElementById('add-empty-player'),
     cardsContainer: document.querySelector('.cards-container'),
+    searchInput: document.getElementById('search-input'),
+    searchEmptyState: document.getElementById('search-empty-state'),
 };
 
 const trackData = [
@@ -72,6 +74,28 @@ const fmtTime = (value) => {
     return `${minutes}:${seconds}`;
 };
 
+const normalizeText = (value = '') => value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+const updateSearchFilter = () => {
+    const query = normalizeText(DOM.searchInput?.value || '');
+    let visibleCards = 0;
+
+    DOM.cardsContainer?.querySelectorAll('.player-container').forEach((card) => {
+        const searchableText = normalizeText(card.dataset.searchValue || card.textContent || '');
+        const matches = !query || searchableText.includes(query);
+        card.classList.toggle('is-hidden', !matches);
+        if (matches) visibleCards += 1;
+    });
+
+    if (DOM.searchEmptyState) {
+        DOM.searchEmptyState.classList.toggle('visible', query && visibleCards === 0);
+        DOM.searchEmptyState.textContent = 'Nenhuma música encontrada para esta busca.';
+    }
+};
+
 const updateStatus = () => {
     if (!state.playlist.length) {
         DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
@@ -89,6 +113,53 @@ const stopAllCards = () => cards.forEach((card) => {
     card.audio.pause();
     card.button.textContent = '▶ Tocar música';
 });
+
+const bindAudioControls = ({
+    audio,
+    button,
+    progressBar,
+    progressFilled,
+    currentTime,
+    durationTime,
+}) => {
+    audio.addEventListener('loadedmetadata', () => {
+        durationTime.textContent = fmtTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        currentTime.textContent = fmtTime(audio.currentTime);
+        if (audio.duration) {
+            progressFilled.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+        }
+    });
+
+    audio.addEventListener('ended', () => {
+        button.textContent = '▶ Tocar música';
+    });
+
+    button.addEventListener('click', () => {
+        if (!audio.paused) {
+            audio.pause();
+            button.textContent = '▶ Tocar música';
+            return;
+        }
+
+        state.audio.pause();
+        DOM.playButton.textContent = '▶ Reproduzir playlist';
+        stopAllCards();
+        audio.play().catch(() => {});
+        button.textContent = '⏸ Pausar';
+    });
+
+    if (progressBar) {
+        progressBar.addEventListener('click', (event) => {
+            if (!audio.duration) return;
+            const rect = progressBar.getBoundingClientRect();
+            const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+            audio.currentTime = percent * audio.duration;
+        });
+    }
+};
 
 const renderPlaylist = () => {
     DOM.playlistElement.innerHTML = state.playlist.length
@@ -182,6 +253,7 @@ const removeFromPlaylist = (index) => {
 const createTrackCard = ({ title, artist, image, src }) => {
     const card = document.createElement('div');
     card.className = 'player-container';
+    card.dataset.searchValue = normalizeText(`${title} ${artist}`);
     card.innerHTML = `
         <img src="${image}" alt="${title} album cover">
         <h2>${title}</h2>
@@ -215,44 +287,8 @@ const createTrackCard = ({ title, artist, image, src }) => {
         durationTime: card.querySelector('.duration-time'),
     };
 
-    track.audio.addEventListener('loadedmetadata', () => {
-        track.durationTime.textContent = fmtTime(track.audio.duration);
-    });
-
-    track.audio.addEventListener('timeupdate', () => {
-        track.currentTime.textContent = fmtTime(track.audio.currentTime);
-        if (track.audio.duration) {
-            track.progressFilled.style.width = `${(track.audio.currentTime / track.audio.duration) * 100}%`;
-        }
-    });
-
-    track.audio.addEventListener('ended', () => {
-        track.button.textContent = '▶ Tocar música';
-    });
-
-    track.button.addEventListener('click', () => {
-        if (!track.audio.paused) {
-            track.audio.pause();
-            track.button.textContent = '▶ Tocar música';
-            return;
-        }
-
-        state.audio.pause();
-        DOM.playButton.textContent = '▶ Reproduzir playlist';
-        stopAllCards();
-
-        track.audio.play().catch(() => {});
-        track.button.textContent = '⏸ Pausar';
-    });
-
+    bindAudioControls(track);
     track.addButton.addEventListener('click', () => addToPlaylist(track));
-
-    track.progressBar.addEventListener('click', (event) => {
-        if (!track.audio.duration) return;
-        const rect = track.progressBar.getBoundingClientRect();
-        const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
-        track.audio.currentTime = percent * track.audio.duration;
-    });
 
     DOM.cardsContainer.appendChild(card);
     cards.push(track);
@@ -261,8 +297,6 @@ const createTrackCard = ({ title, artist, image, src }) => {
 const setupDownloadedMusic = (file, card) => {
     const title = file.name.replace(/\.[^/.]+$/, '');
     const artist = 'Download local';
-    const trackTitle = card.querySelector('h2');
-    const trackArtist = card.querySelector('.artista');
     const playButton = card.querySelector('.botaoPlay');
     const playlistButton = card.querySelector('.btn-add-playlist');
     const progressBar = card.querySelector('.track-progress');
@@ -289,6 +323,9 @@ const setupDownloadedMusic = (file, card) => {
     audio.appendChild(source);
     card.appendChild(audio);
 
+    card.dataset.searchValue = normalizeText(`${title} ${artist}`);
+    updateSearchFilter();
+
     const track = {
         title,
         artist,
@@ -302,44 +339,8 @@ const setupDownloadedMusic = (file, card) => {
         durationTime,
     };
 
-    audio.addEventListener('loadedmetadata', () => {
-        durationTime.textContent = fmtTime(audio.duration);
-    });
-
-    audio.addEventListener('timeupdate', () => {
-        currentTime.textContent = fmtTime(audio.currentTime);
-        if (audio.duration) {
-            progressFill.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-        }
-    });
-
-    audio.addEventListener('ended', () => {
-        playButton.textContent = '▶ Tocar música';
-    });
-
-    playButton.addEventListener('click', () => {
-        if (!audio.paused) {
-            audio.pause();
-            playButton.textContent = '▶ Tocar música';
-            return;
-        }
-
-        state.audio.pause();
-        DOM.playButton.textContent = '▶ Reproduzir playlist';
-        stopAllCards();
-
-        audio.play().catch(() => {});
-        playButton.textContent = '⏸ Pausar';
-    });
-
+    bindAudioControls(track);
     playlistButton.addEventListener('click', () => addToPlaylist(track));
-
-    progressBar.addEventListener('click', (event) => {
-        if (!audio.duration) return;
-        const rect = progressBar.getBoundingClientRect();
-        const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
-        audio.currentTime = percent * audio.duration;
-    });
 
     cards.push(track);
     downloadBar.style.display = 'block';
@@ -451,6 +452,7 @@ DOM.addEmptyButton.addEventListener('click', () => {
         </div>
     `;
 
+    emptyCard.dataset.searchValue = normalizeText('Sem música Sem música salva');
     emptyCard.querySelector('.delete-player-btn').addEventListener('click', () => emptyCard.remove());
     emptyCard.querySelector('.btn-add-image').addEventListener('click', () => {
         pendingImageCard = emptyCard;
@@ -461,7 +463,11 @@ DOM.addEmptyButton.addEventListener('click', () => {
         fileChooser.click();
     });
     DOM.cardsContainer.appendChild(emptyCard);
+    updateSearchFilter();
 });
+
+DOM.searchInput?.addEventListener('input', updateSearchFilter);
 
 trackData.forEach(createTrackCard);
 renderPlaylist();
+updateSearchFilter();
