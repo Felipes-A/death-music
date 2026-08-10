@@ -51,3 +51,14 @@
         button:hover {
             /* Tom de vermelho um pouco mais escuro quando passa o mouse */
             background-color: #636363; }
+
+.google-signin-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#google-signin-button {
+    width: 100%;
+    max-width: 320px;
+}
