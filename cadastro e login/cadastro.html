@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cadastro DEATH-MUSIC</title>
 <link rel="stylesheet" href="cadastro.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="container-cadastro">
@@ -25,9 +26,14 @@
       <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
     </div>
 
+    <div class="google-signin-container">
+      <div id="google-signin-button"></div>
+    </div>
+
     <button type="submit" class="botao-vermelho">Cadastrar</button>
   </form>
 </div>
+<script src="google-auth.js"></script>
 </body>
 
 </html>
