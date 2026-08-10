@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login DEATH-MUSIC</title>
 </head>
- <link rel="stylesheet" href="login.css">
-<body>
+ <link rel="stylesheet" href="login.css">    <script src="https://accounts.google.com/gsi/client" async defer></script><body>
      <div class="login-box">
         <h2>Login</h2>
         <form id="loginForm" action="../Death-music lobby.html" method="get">
@@ -19,11 +18,13 @@
                 <input type="password" id="password" name="password" placeholder="senha" required>
             </div>
             <div id="mensagem" style="margin-top: 10px; padding: 10px; display: none; border-radius: 5px;"></div>
+            <div class="google-signin-container">
+                <div id="google-signin-button"></div>
+            </div>
             <button type="submit">Entrar</button>
             <p style="text-align: center; margin-top: 15px;">Não tem conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
         </form>
     </div>
-
-
+    <script src="google-auth.js"></script>
 </body>
 </html>
