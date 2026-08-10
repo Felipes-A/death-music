@@ -421,6 +421,8 @@ DOM.addTrackButton.addEventListener('click', () => {
 DOM.playButton.addEventListener('click', togglePlaylist);
 DOM.prevButton.addEventListener('click', prevTrack);
 DOM.nextButton.addEventListener('click', nextTrack);
+
+/*
 DOM.addEmptyButton.addEventListener('click', () => {
     const emptyCard = document.createElement('div');
     emptyCard.className = 'player-container empty-player';
@@ -465,6 +467,7 @@ DOM.addEmptyButton.addEventListener('click', () => {
     DOM.cardsContainer.appendChild(emptyCard);
     updateSearchFilter();
 });
+*/
 
 DOM.searchInput?.addEventListener('input', updateSearchFilter);
 
