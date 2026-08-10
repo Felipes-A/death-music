@@ -73,3 +73,14 @@ body {
 .botao-vermelho:active {
   transform: scale(0.98);
 }
+
+.google-signin-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+#google-signin-button {
+  width: 100%;
+  max-width: 320px;
+}
