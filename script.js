@@ -9,7 +9,121 @@ const DOM = {
     cardsContainer: document.querySelector('.cards-container'),
     searchInput: document.getElementById('search-input'),
     searchEmptyState: document.getElementById('search-empty-state'),
+    profileButton: document.getElementById('profile-button'),
+    profilePanel: document.getElementById('profile-panel'),
+    profileAvatar: document.getElementById('profile-avatar'),
+    profilePanelAvatar: document.getElementById('profile-panel-avatar'),
+    profileAvatarFallback: document.getElementById('profile-avatar-fallback'),
+    profilePanelAvatarFallback: document.getElementById('profile-panel-avatar-fallback'),
+    profileName: document.getElementById('profile-name'),
+    profileEmail: document.getElementById('profile-email'),
+    profilePhotoInput: document.getElementById('profile-photo-input'),
+    profilePhotoButton: document.getElementById('profile-photo-button'),
 };
+
+const defaultProfile = {
+    name: 'Usuário',
+    email: 'usuario@email.com',
+    photo: '',
+};
+
+const getProfileData = () => {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('nome') || params.get('name') || localStorage.getItem('deathMusicName') || defaultProfile.name;
+    const email = params.get('email') || localStorage.getItem('deathMusicEmail') || defaultProfile.email;
+    const photo = params.get('photo') || localStorage.getItem('deathMusicPhoto') || defaultProfile.photo;
+
+    localStorage.setItem('deathMusicName', name);
+    localStorage.setItem('deathMusicEmail', email);
+    localStorage.setItem('deathMusicPhoto', photo);
+
+    return { name, email, photo };
+};
+
+const applyProfile = () => {
+    const profile = getProfileData();
+    const hasPhoto = Boolean(profile.photo);
+
+    if (DOM.profileAvatar) {
+        DOM.profileAvatar.src = profile.photo;
+        DOM.profileAvatar.hidden = !hasPhoto;
+    }
+    if (DOM.profilePanelAvatar) {
+        DOM.profilePanelAvatar.src = profile.photo;
+        DOM.profilePanelAvatar.hidden = !hasPhoto;
+    }
+    if (DOM.profileAvatarFallback) {
+        DOM.profileAvatarFallback.style.display = hasPhoto ? 'none' : 'flex';
+    }
+    if (DOM.profilePanelAvatarFallback) {
+        DOM.profilePanelAvatarFallback.style.display = hasPhoto ? 'none' : 'flex';
+    }
+    if (DOM.profileName) DOM.profileName.textContent = profile.name;
+    if (DOM.profileEmail) DOM.profileEmail.textContent = profile.email;
+};
+
+const openProfilePhotoPicker = () => {
+    DOM.profilePhotoInput?.click();
+};
+
+const handleProfilePhotoSelection = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        alert('Selecione uma imagem válida para a foto de perfil.');
+        event.target.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const imageData = reader.result;
+        localStorage.setItem('deathMusicPhoto', imageData);
+        if (DOM.profileAvatar) {
+            DOM.profileAvatar.src = imageData;
+            DOM.profileAvatar.hidden = false;
+        }
+        if (DOM.profilePanelAvatar) {
+            DOM.profilePanelAvatar.src = imageData;
+            DOM.profilePanelAvatar.hidden = false;
+        }
+        if (DOM.profileAvatarFallback) {
+            DOM.profileAvatarFallback.style.display = 'none';
+        }
+        if (DOM.profilePanelAvatarFallback) {
+            DOM.profilePanelAvatarFallback.style.display = 'none';
+        }
+        DOM.profilePhotoInput.value = '';
+    };
+    reader.readAsDataURL(file);
+};
+
+if (DOM.profileButton && DOM.profilePanel) {
+    DOM.profileButton.addEventListener('click', () => {
+        const isHidden = DOM.profilePanel.hasAttribute('hidden');
+        DOM.profilePanel.toggleAttribute('hidden', !isHidden);
+        DOM.profileButton.setAttribute('aria-expanded', String(isHidden));
+    });
+
+    document.addEventListener('click', (event) => {
+        const clickedInsideProfile = DOM.profileButton.contains(event.target) || DOM.profilePanel.contains(event.target);
+        if (!clickedInsideProfile) {
+            DOM.profilePanel.setAttribute('hidden', 'hidden');
+            DOM.profileButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
+if (DOM.profilePhotoButton) {
+    DOM.profilePhotoButton.addEventListener('click', openProfilePhotoPicker);
+}
+
+if (DOM.profilePhotoInput) {
+    DOM.profilePhotoInput.addEventListener('change', handleProfilePhotoSelection);
+}
+
+applyProfile();
 
 const trackData = [
     {
