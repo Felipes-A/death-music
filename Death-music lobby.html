@@ -44,9 +44,40 @@
         </nav>
 
         <main>
-            <header>
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input id="search-input" placeholder="o que você quer ouvir?">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="search-input" placeholder="o que você quer ouvir?">
+                </div>
+
+                <div class="profile-menu-wrap">
+                    <button class="profile-button" id="profile-button" type="button" aria-expanded="false" aria-controls="profile-panel">
+                        <div class="profile-avatar-fallback" id="profile-avatar-fallback">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <img id="profile-avatar" alt="Foto do perfil" hidden>
+                        <span class="profile-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+                    </button>
+
+                    <div class="profile-panel" id="profile-panel" hidden>
+                        <div class="profile-header-card">
+                            <div class="profile-avatar-fallback panel-avatar-fallback" id="profile-panel-avatar-fallback">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <img id="profile-panel-avatar" alt="Foto de perfil" hidden>
+                            <div class="profile-texts">
+                                <strong id="profile-name">Usuário</strong>
+                                <small id="profile-email">usuario@email.com</small>
+                            </div>
+                        </div>
+
+                        <button type="button" class="profile-photo-button" id="profile-photo-button">
+                            <i class="fa-solid fa-camera"></i>
+                            Escolher foto
+                        </button>
+                        <input type="file" id="profile-photo-input" accept="image/*" hidden>
+                    </div>
+                </div>
             </header>
 
             <section class="content">
