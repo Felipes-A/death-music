@@ -8,6 +8,16 @@ const DOM = {
     cardsContainer: document.querySelector('.cards-container'),
     searchInput: document.getElementById('search-input'),
     searchEmptyState: document.getElementById('search-empty-state'),
+    profileButton: document.getElementById('profile-button'),
+    profilePanel: document.getElementById('profile-panel'),
+    profileName: document.getElementById('profile-name'),
+    profileEmail: document.getElementById('profile-email'),
+    profilePhotoButton: document.getElementById('profile-photo-button'),
+    profilePhotoInput: document.getElementById('profile-photo-input'),
+    profileAvatar: document.getElementById('profile-avatar'),
+    profileAvatarFallback: document.getElementById('profile-avatar-fallback'),
+    profilePanelAvatar: document.getElementById('profile-panel-avatar'),
+    profilePanelAvatarFallback: document.getElementById('profile-panel-avatar-fallback'),
 };
 
 const trackData = [
@@ -41,9 +51,67 @@ const state = {
     playlist: [],
     index: 0,
     audio: new Audio(),
+    profile: {
+        name: 'Usuário',
+        email: 'usuario@email.com',
+        avatar: '',
+    },
 };
 
 const cards = [];
+
+const syncProfilePhoto = (avatarUrl) => {
+    const hasAvatar = Boolean(avatarUrl);
+
+    if (DOM.profileAvatar) {
+        DOM.profileAvatar.src = avatarUrl || '';
+        DOM.profileAvatar.hidden = !hasAvatar;
+        DOM.profileAvatar.style.display = hasAvatar ? 'block' : 'none';
+    }
+
+    if (DOM.profileAvatarFallback) {
+        DOM.profileAvatarFallback.hidden = hasAvatar;
+        DOM.profileAvatarFallback.style.display = hasAvatar ? 'none' : 'flex';
+    }
+
+    if (DOM.profilePanelAvatar) {
+        DOM.profilePanelAvatar.src = avatarUrl || '';
+        DOM.profilePanelAvatar.hidden = !hasAvatar;
+        DOM.profilePanelAvatar.style.display = hasAvatar ? 'block' : 'none';
+    }
+
+    if (DOM.profilePanelAvatarFallback) {
+        DOM.profilePanelAvatarFallback.hidden = hasAvatar;
+        DOM.profilePanelAvatarFallback.style.display = hasAvatar ? 'none' : 'flex';
+    }
+};
+
+const renderProfile = () => {
+    if (DOM.profileName) DOM.profileName.textContent = state.profile.name;
+    if (DOM.profileEmail) DOM.profileEmail.textContent = state.profile.email;
+    syncProfilePhoto(state.profile.avatar);
+};
+
+const toggleProfilePanel = () => {
+    if (!DOM.profileButton || !DOM.profilePanel) return;
+    const isHidden = DOM.profilePanel.hasAttribute('hidden');
+    DOM.profilePanel.toggleAttribute('hidden', !isHidden);
+    DOM.profileButton.setAttribute('aria-expanded', String(isHidden));
+};
+
+const updateProfileFromFile = (file) => {
+    if (!file || !file.type.startsWith('image/')) {
+        alert('Selecione uma imagem válida para o perfil.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        state.profile.avatar = String(event.target?.result || '');
+        renderProfile();
+    };
+    reader.readAsDataURL(file);
+};
 
 const fmtTime = (value) => {
     if (!Number.isFinite(value)) return '0:00';
@@ -173,6 +241,8 @@ const createTrackCard = ({ title, artist, image, src }) => {
 };
 
 const renderPlaylist = () => {
+    if (!DOM.playlistElement) return;
+
     DOM.playlistElement.innerHTML = state.playlist.length
         ? state.playlist.map((track, index) => `
             <li class="playlist-item${index === state.index ? ' active' : ''}">
@@ -262,7 +332,7 @@ const removeFromPlaylist = (index) => {
     renderPlaylist();
 };
 
-DOM.addTrackButton.addEventListener('click', () => {
+DOM.addTrackButton?.addEventListener('click', () => {
     const choice = Number(prompt(
         trackData.map((track, index) => `${index + 1}. ${track.title} — ${track.artist}`).join('\n')
     )) - 1;
@@ -275,11 +345,29 @@ DOM.addTrackButton.addEventListener('click', () => {
     addToPlaylist(cards[choice] || trackData[choice]);
 });
 
-DOM.playButton.addEventListener('click', togglePlaylist);
-DOM.prevButton.addEventListener('click', prevTrack);
-DOM.nextButton.addEventListener('click', nextTrack);
+DOM.playButton?.addEventListener('click', togglePlaylist);
+DOM.prevButton?.addEventListener('click', prevTrack);
+DOM.nextButton?.addEventListener('click', nextTrack);
 DOM.searchInput?.addEventListener('input', updateSearchFilter);
+DOM.profileButton?.addEventListener('click', toggleProfilePanel);
+DOM.profilePhotoButton?.addEventListener('click', () => DOM.profilePhotoInput?.click());
+DOM.profilePhotoInput?.addEventListener('change', (event) => {
+    const [file] = event.target.files || [];
+    updateProfileFromFile(file);
+    event.target.value = '';
+});
 
-trackData.forEach(createTrackCard);
+document.addEventListener('click', (event) => {
+    const clickedInsideProfile = DOM.profileButton?.contains(event.target) || DOM.profilePanel?.contains(event.target);
+    if (!clickedInsideProfile && DOM.profilePanel && !DOM.profilePanel.hasAttribute('hidden')) {
+        DOM.profilePanel.setAttribute('hidden', 'hidden');
+        DOM.profileButton?.setAttribute('aria-expanded', 'false');
+    }
+});
+
+renderProfile();
+if (DOM.cardsContainer) {
+    trackData.forEach(createTrackCard);
+    updateSearchFilter();
+}
 renderPlaylist();
-updateSearchFilter();
