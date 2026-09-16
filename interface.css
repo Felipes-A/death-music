@@ -87,7 +87,8 @@ main{
 .container{display:flex;min-height:100vh}
 
 .sidebar{width:300px;background:linear-gradient(180deg, #171719, #090909);padding:24px 24px 90px;display:flex;flex-direction:column;gap:20px;border-right:1px solid rgba(255,255,255,.06)}
-.nav-logo i{font-size:24px;color:#d62d2d}
+.nav-logo{display:flex;align-items:center;justify-content:center;padding:8px 0 4px}
+.brand-logo{width:220px;max-width:100%;height:auto;display:block;opacity:.88;filter:grayscale(1) contrast(1.05);border-radius:10px}
 .nav-library{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
 
 .nav-playlist{background:linear-gradient(180deg, #140d0e, #070707);padding:16px;border-radius:12px;border:1px solid rgba(214,40,40,.28);box-shadow:0 0 0 1px rgba(255,255,255,.03) inset}
