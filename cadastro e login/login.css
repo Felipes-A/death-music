@@ -1,56 +1,90 @@
  body {
             font-family: Arial, sans-serif;
-            background-color: #282828;
+            background: radial-gradient(circle at top, rgba(149, 18, 27, 0.38), transparent 26%), linear-gradient(135deg, #121214 0%, #1b1a1c 45%, #0a0a0b 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #f3f3f3;
         }
         .login-box {
-            background-color: rgb(255, 255, 255);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            background: rgba(19, 18, 20, 0.96);
+            padding: 28px 26px 22px;
+            border-radius: 14px;
+            border: 1px solid rgba(236, 67, 77, 0.35);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(255,255,255,0.02);
+            width: 330px;
+        }
+        .auth-brand {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .auth-brand img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            display: block;
+            opacity: 0.9;
+            filter: grayscale(1) contrast(1.05);
         }
         
         h2 {
             text-align: center;
-            color: #000000;
-            margin-bottom: 20px;
+            color: #f3f3f3;
+            margin-bottom: 22px;
+            font-size: 1.8rem;
+            letter-spacing: 0.04em;
         }
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #343131;
+            margin-bottom: 7px;
+            color: #e2dcdc;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
         .input-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #605959;
-            border-radius: 4px;
-            box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
-            
+            padding: 12px 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.02);
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .input-group input::placeholder {
+            color: rgba(255,255,255,0.45);
+        }
+        .input-group input:focus {
+            border-color: rgba(210, 48, 58, 0.8);
+            box-shadow: 0 0 0 3px rgba(210, 48, 58, 0.12);
         }
         button {
             width: 100%;
-            padding: 10px;
-            /* Cor vermelha do botão */
-            background-color: #757575; 
+            padding: 12px 10px;
+            background: linear-gradient(180deg, #d63139 0%, #8a0d16 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 12px 18px rgba(163, 17, 27, 0.22);
         }
         button:hover {
-            /* Tom de vermelho um pouco mais escuro quando passa o mouse */
-            background-color: #636363; }
+            filter: brightness(1.07);
+            transform: translateY(-1px);
+        }
 
 .google-signin-container {
     margin: 20px 0;
@@ -61,4 +95,19 @@
 #google-signin-button {
     width: 100%;
     max-width: 320px;
+}
+
+#mensagem {
+    color: #f4d8d8;
+    background: rgba(174, 20, 29, 0.12);
+    border: 1px solid rgba(174, 20, 29, 0.2);
+}
+
+p a {
+    color: #f06d76;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
 }
