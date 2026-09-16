@@ -6,68 +6,99 @@
 }
 
 body {
-  background-color: #282828;
+  background: radial-gradient(circle at top, rgba(149, 18, 27, 0.42), transparent 26%), linear-gradient(135deg, #121214 0%, #1b1a1c 45%, #0a0a0b 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  color: #f3f3f3;
 }
 
 .container-cadastro {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: rgba(19, 18, 20, 0.96);
+  padding: 28px 26px 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(236, 67, 77, 0.35);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(255,255,255,0.02);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+}
+
+.auth-brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.auth-brand img {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  opacity: 0.9;
+  filter: grayscale(1) contrast(1.05);
 }
 
 .container-cadastro h2 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #000000;
+  margin-bottom: 22px;
+  color: #f3f3f3;
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
 }
 
 .campo-form {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .campo-form label {
   display: block;
-  margin-bottom: 5px;
-  color: #666;
-  font-size: 14px;
+  margin-bottom: 7px;
+  color: #e2dcdc;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .campo-form input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
   font-size: 16px;
   outline: none;
-  transition: border-color 0.3s;
+  background: rgba(255,255,255,0.02);
+  color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo-form input::placeholder {
+  color: rgba(255,255,255,0.45);
 }
 
 .campo-form input:focus {
-  border-color: #ff000d; /* Vermelho padrão */
+  border-color: rgba(210, 48, 58, 0.8);
+  box-shadow: 0 0 0 3px rgba(210, 48, 58, 0.12);
 }
 
 .botao-vermelho {
   width: 100%;
-  padding: 14px;
-  background-color: #757575; /* Cor vermelha */
+  padding: 12px;
+  background: linear-gradient(180deg, #d63139 0%, #8a0d16 100%);
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s;
+  transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 18px rgba(163, 17, 27, 0.22);
 }
 
 .botao-vermelho:hover {
-  background-color: #636363; /* Tom de vermelho mais escuro ao passar o mouse */
+  filter: brightness(1.07);
+  transform: translateY(-1px);
 }
 
 .botao-vermelho:active {
