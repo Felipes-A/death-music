@@ -1,17 +1,131 @@
-:root{--bg:#090909;--bg-soft:#141517;--panel:rgba(19,19,21,.96);--panel-border:rgba(255,255,255,.10);--text:#f5f3f1;--muted:#cbc6c1;--input-bg:rgba(255,255,255,.02);--accent:#f3f1ee;--accent-strong:#cdc9c4;--shadow:rgba(0,0,0,.36)}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
-body{background:radial-gradient(circle at top, rgba(255,255,255,.08), transparent 24%), linear-gradient(135deg, #090909 0%, #17181a 40%, #0d0d0e 100%);display:flex;justify-content:center;align-items:center;min-height:100vh;color:var(--text)}
-.container-cadastro{background:var(--panel);padding:28px 26px 24px;border-radius:14px;border:1px solid var(--panel-border);box-shadow:0 18px 42px var(--shadow), inset 0 0 0 1px rgba(255,255,255,.02);width:100%;max-width:420px}
-.auth-brand{display:flex;justify-content:center;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-.auth-brand img{width:100%;max-width:220px;height:auto;opacity:.9;filter:grayscale(1) contrast(1.05)}
-.container-cadastro h2{text-align:center;margin-bottom:22px;color:var(--text);font-size:1.8rem;letter-spacing:.04em}
-.campo-form{margin-bottom:18px}
-.campo-form label{display:block;margin-bottom:7px;color:var(--muted);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
-.campo-form input{width:100%;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:16px;outline:none;background:var(--input-bg);color:#fff;transition:border-color .2s ease, box-shadow .2s ease}
-.campo-form input::placeholder{color:rgba(255,255,255,.45)}
-.campo-form input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255,255,.08)}
-.botao-vermelho{width:100%;padding:12px;background:linear-gradient(180deg, var(--accent), var(--accent-strong));color:#111;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s ease, filter .2s ease, box-shadow .2s ease;box-shadow:0 12px 18px rgba(255,255,255,.08)}
-.botao-vermelho:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.botao-vermelho:active{transform:scale(.98)}
-.google-signin-container{margin:20px 0;display:flex;justify-content:center}
-#google-signin-button{width:100%;max-width:320px}
+:root {
+  --bg: #090909;
+  --bg-soft: #141517;
+  --panel: rgba(19, 19, 21, 0.96);
+  --panel-border: rgba(255, 255, 255, 0.10);
+  --text: #f5f3f1;
+  --muted: #cbc6c1;
+  --input-bg: rgba(255, 255, 255, 0.02);
+  --accent: #f3f1ee;
+  --accent-strong: #cdc9c4;
+  --shadow: rgba(0, 0, 0, 0.36);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 24%), linear-gradient(135deg, #090909 0%, #17181a 40%, #0d0d0e 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text);
+}
+
+.container-cadastro {
+  background: var(--panel);
+  padding: 28px 26px 24px;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 18px 42px var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.02);
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.auth-brand img {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  opacity: 0.9;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.container-cadastro h2 {
+  text-align: center;
+  margin-bottom: 22px;
+  color: var(--text);
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+}
+
+.campo-form {
+  margin-bottom: 18px;
+}
+
+.campo-form label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.campo-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  background: var(--input-bg);
+  color: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo-form input::placeholder {
+  color: rgba(255,255,255,0.45);
+}
+
+.campo-form input:focus {
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+}
+
+.botao-vermelho {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 18px rgba(255,255,255,0.08);
+}
+
+.botao-vermelho:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.botao-vermelho:active {
+  transform: scale(0.98);
+}
+
+.google-signin-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+#google-signin-button {
+  width: 100%;
+  max-width: 320px;
+}
+
