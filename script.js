@@ -143,7 +143,7 @@ const updateSearchFilter = () => {
 const updateStatus = () => {
     if (!state.playlist.length) {
         DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
-        DOM.playButton.textContent = '▶ Reproduzir playlist';
+        DOM.playButton.textContent = '▶ play';
         return;
     }
 
@@ -151,6 +151,8 @@ const updateStatus = () => {
     DOM.playlistStatus.textContent = state.audio.paused
         ? `Pausado: ${track.title} — ${track.artist}`
         : `Tocando: ${track.title} — ${track.artist}`;
+
+    DOM.playButton.textContent = state.audio.paused ? '▶ play' : '⏸ play';
 };
 
 const stopAllCards = () => {
@@ -284,7 +286,7 @@ const switchPlaylistTrack = (index) => {
     stopAllCards();
     state.audio.src = current.src;
     state.audio.play().catch(() => {});
-    DOM.playButton.textContent = '⏸ Pausar playlist';
+    DOM.playButton.textContent = '⏸ play';
     renderPlaylist();
 };
 
@@ -298,7 +300,7 @@ const togglePlaylist = () => {
         switchPlaylistTrack(state.index);
     } else {
         state.audio.pause();
-        DOM.playButton.textContent = '▶ Reproduzir playlist';
+        DOM.playButton.textContent = '▶ play';
         updateStatus();
     }
 };
