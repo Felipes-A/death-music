@@ -1,148 +1,22 @@
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #262626;
-  color: white;
-  padding: 40px 20px;
-  margin: 0;
-}
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.player-container {
-  background-color: #4b4b4b;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-}
-
-.player-container:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-}
-
-h2 {
-  margin: 0 0 5px 0;
-  font-size: 24px;
-  color: #ffffffc4;
-}
-
-.artista {
-  color: #cccccc;
-  margin-bottom: 25px;
-  font-size: 14px;
-}
-
-.button-group {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.botaoplay , .btn-download{
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-}
-
-.botaoPlay {
-  background-color: #b71717;
-  color: white;
-  flex: 1;
-  min-width: 120px;
-}
-
-.botaoPlay:hover {
-  background-color: #cc0000;
-  transform: scale(1.05);
-}
-
-.btn-download {
-  background-color: #333333;
-  color: white;
-  flex: 1;
-  min-width: 120px;
-}
-
-.btn-download:hover {
-  background-color: #555555;
-  transform: scale(1.05);
-}
-
-/* Settings panel styles */
-.card-settings-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  color: #ffffffc4;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.card-settings-panel {
-  position: absolute;
-  top: 40px;
-  right: 12px;
-  background: rgba(0,0,0,0.85);
-  color: #fff;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  width: 200px;
-  display: none;
-  z-index: 40;
-}
-
-.card-settings-panel.open {
-  display: block;
-}
-
-.card-settings-panel .settings-row {
-  margin-bottom: 8px;
-  font-size: 13px;
-}
-
-.card-settings-panel .color-input {
-  width: 44px;
-  height: 28px;
-  border: none;
-  padding: 0;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-
-.card-settings-panel input[type="range"] {
-  width: 100%;
-}
-
-.card-settings-panel button {
-  margin-right: 6px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
-
-.card-settings-panel .apply-settings { background: #2a9d8f; color: #fff; }
-.card-settings-panel .reset-settings { background: #666; color: #fff; }
+body{font-family:'Arial',sans-serif;background:radial-gradient(circle at top, rgba(255,255,255,.08), transparent 24%),linear-gradient(135deg, #090909 0%, #17181a 40%, #0d0d0e 100%);color:#f5f3f1;padding:40px 20px;margin:0}
+.cards-container{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:30px;max-width:1200px;margin:0 auto;padding:20px}
+.player-container{background:linear-gradient(180deg, #1a1b1d, #0d0d0f);padding:30px;border-radius:15px;text-align:center;box-shadow:0 10px 20px rgba(0,0,0,.3);transition:transform .3s ease, box-shadow .3s ease;position:relative;border:1px solid rgba(255,255,255,.08)}
+.player-container:hover{transform:translateY(-10px);box-shadow:0 15px 30px rgba(255,255,255,.04)}
+h2{margin:0 0 5px 0;font-size:24px;color:#f5f3f1}
+.artista{color:#d9d4d0;margin-bottom:25px;font-size:14px}
+.button-group{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+.botaoplay,.btn-download{padding:12px 25px;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s ease}
+.botaoPlay{background:linear-gradient(180deg, #f3f1ee, #cdc9c4);color:#111;flex:1;min-width:120px}
+.botaoPlay:hover{background:linear-gradient(180deg, #fff, #d8d3cf);transform:scale(1.05)}
+.btn-download{background:#25272a;color:#fff;flex:1;min-width:120px}
+.btn-download:hover{background:#3a3d40;transform:scale(1.05)}
+.card-settings-btn{position:absolute;top:12px;right:12px;background:transparent;border:none;color:#ffffffc4;font-size:18px;cursor:pointer}
+.card-settings-panel{position:absolute;top:40px;right:12px;background:rgba(0,0,0,.85);color:#fff;padding:10px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.6);width:200px;display:none;z-index:40}
+.card-settings-panel.open{display:block}
+.card-settings-panel .settings-row{margin-bottom:8px;font-size:13px}
+.card-settings-panel .color-input{width:44px;height:28px;border:none;padding:0;margin-left:6px;vertical-align:middle}
+.card-settings-panel input[type="range"]{width:100%}
+.card-settings-panel button{margin-right:6px;padding:6px 8px;border-radius:6px;border:none;cursor:pointer}
+.card-settings-panel .apply-settings{background:#f3f1ee;color:#111}
+.card-settings-panel .reset-settings{background:#666;color:#fff}
 
