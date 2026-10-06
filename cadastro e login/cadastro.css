@@ -47,7 +47,7 @@ body {
 
 .auth-brand img {
   width: 100%;
-  max-width: 220px;
+  max-width: 350px;
   height: auto;
   opacity: 0.9;
   filter: grayscale(1) contrast(1.05);
