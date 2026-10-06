@@ -8,12 +8,13 @@ Este projeto ainda está em desenvolvimento e foi feito usando HTML, CSS e JavaS
 
 - Mostra músicas em cards com o nome, artista e imagem da capa.
 - Permite tocar e pausar as músicas.
-- Mostra o tempo atual e a duração da música.
+- Mostra o tempo atual e a duração das músicas.
 - Possui uma busca por nome da música ou do artista.
 - Permite adicionar músicas em uma playlist.
 - Possui botões para avançar, voltar, pausar e remover músicas da playlist.
 - Possui um menu de usuário onde é possível escolher uma foto do computador.
-- Possui páginas separadas para login e cadastro.
+- Possui um botão **Entrar** no cabeçalho do lobby, que abre a tela de login.
+- Permite acessar o cadastro pelo link disponível na tela de login.
 
 ## Estrutura do projeto
 
@@ -38,28 +39,26 @@ Death-music/
 
 ## Como abrir o projeto
 
-Como o projeto é feito somente com arquivos HTML, CSS e JavaScript, não é necessário instalar muitas coisas. Para abrir:
-
 1. Abra a pasta do projeto no VS Code.
-2. Instale a extensão **Live Server**, caso ainda não tenha.
+2. Instale a extensão **Live Server**, caso ainda não esteja instalada.
 3. Clique com o botão direito no arquivo `Death-music lobby.html`.
-4. Selecione **Open with Live Server**.
+4. Selecione **Open with Live Server**. A configuração do projeto usa a porta `5501`.
 
-Também dá para iniciar um servidor local usando Python:
+Se preferir, inicie um servidor local com Python:
 
 ```bash
 python -m http.server 8000
 ```
 
-Depois é só acessar `http://localhost:8000/Death-music%20lobby.html` no navegador.
+Nesse caso, acesse `http://localhost:8000/Death-music%20lobby.html` no navegador.
 
-Estou usando um servidor local porque os arquivos de áudio e as imagens ficam dentro do próprio projeto.
+Use um servidor local para que os arquivos de áudio, imagens e recursos externos funcionem corretamente.
 
 ## Páginas do projeto
 
 - `Death-music lobby.html`: página principal do site.
-- `cadastro e login/login.html`: página de login.
-- `cadastro e login/cadastro.html`: página de cadastro.
+- `cadastro e login/login.html`: página de login, acessada pelo botão **Entrar** no lobby.
+- `cadastro e login/cadastro.html`: página de criação de conta, acessada pelo link na tela de login.
 - `cards de musicas/musicas.html`: página com os cards de músicas.
 
 ## Como adicionar uma música
@@ -84,14 +83,13 @@ Exemplo:
 
 ## Login com Google
 
-Foi adicionada uma primeira versão do login com Google no arquivo `cadastro e login/google-auth.js`. Para funcionar de verdade, ainda é necessário:
+As páginas de login e cadastro carregam o Google Identity Services por meio de `cadastro e login/google-auth.js`. O botão só é exibido quando o Client ID está configurado:
 
-- criar um Client ID no Google Cloud Console;
-- trocar `YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com` pelo Client ID correto;
-- configurar os domínios permitidos;
-- criar um backend para validar o login.
+1. Crie um cliente OAuth do tipo **Aplicativo da Web** no Google Cloud Console.
+2. Adicione a origem local usada para testar, por exemplo `http://localhost:5501` com Live Server ou `http://localhost:8000` com Python, às origens JavaScript autorizadas.
+3. Substitua `YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com` pelo Client ID gerado.
 
-Por enquanto, o login e o cadastro são apenas uma demonstração. Os formulários levam para a página principal, mas ainda não salvam usuários ou senhas em um banco de dados.
+O script informa na tela quando falta o Client ID ou quando o SDK do Google não carrega. No estado atual, receber uma credencial do Google não conclui o login nem cria uma conta: é necessário validá-la em um backend e persistir os dados com segurança. Os formulários tradicionais também são demonstrações e não armazenam usuários ou senhas.
 
 ## Tecnologias usadas
 
@@ -104,8 +102,8 @@ Por enquanto, o login e o cadastro são apenas uma demonstração. Os formulári
 
 ## O que ainda falta fazer
 
-- Criar um backend e um banco de dados para os usuários.
-- Fazer o login funcionar de forma completa.
+- Criar um backend para validar credenciais e gerenciar contas com segurança.
+- Conectar login e cadastro a um banco de dados.
 - Salvar a playlist para ela não desaparecer ao atualizar a página.
 - Melhorar a página de cards de músicas.
 - Continuar adicionando músicas e ajustando o layout.
