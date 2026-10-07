@@ -28,8 +28,8 @@ const trackData = [
         src: 'audio/Capcom Sound Team - DEVILS NEVER CRY (スタッフロール) (SPOTISAVER).mp3',
     },
     {
-        title: 'Snot',
-        artist: 'Stoopid',
+        title: 'Stoopid',
+        artist: 'Snot',
         image: 'imagens/81nACACrssL._UF1000,1000_QL80_.jpg',
         src: 'audio/Snot - Stoopid (SPOTISAVER).mp3',
     },
