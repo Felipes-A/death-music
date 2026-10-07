@@ -1,109 +1,123 @@
 # Death Music
 
-O Death Music é um site de músicas que estou desenvolvendo como projeto de TCC. A ideia é criar uma plataforma simples para ouvir músicas, pesquisar artistas e montar uma playlist.
+Projeto de player de música em HTML, CSS e JavaScript, desenvolvido como ideia para um TCC. A aplicação simula uma biblioteca de música com busca, reprodução de áudio, playlist e perfil de usuário.
 
-Este projeto ainda está em desenvolvimento e foi feito usando HTML, CSS e JavaScript.
+O objetivo principal é criar uma interface simples e funcional para ouvir músicas, organizar uma playlist e testar conceitos de UX em um player web.
 
-## O que o site faz
+## Funcionalidades
 
-- Mostra músicas em cards com o nome, artista e imagem da capa.
-- Permite tocar e pausar as músicas.
-- Mostra o tempo atual e a duração das músicas.
-- Possui uma busca por nome da música ou do artista.
-- Permite adicionar músicas em uma playlist.
-- Possui botões para avançar, voltar, pausar e remover músicas da playlist.
-- Possui um menu de usuário onde é possível escolher uma foto do computador.
-- Possui um botão **Entrar** no cabeçalho do lobby, que abre a tela de login.
-- Permite acessar o cadastro pelo link disponível na tela de login.
+- Cards de músicas com imagem, título e artista
+- Reprodução de áudio com botão de play/pause
+- Controle de tempo atual e duração da música
+- Busca por música ou artista
+- Adição de músicas à playlist
+- Navegação entre faixas com botões anterior/próximo
+- Remoção de músicas da playlist
+- Perfil do usuário com opção de upload de foto
+- Tela de login e cadastro com integração inicial de autenticação Google
 
 ## Estrutura do projeto
 
 ```text
 Death-music/
-├── Death-music lobby.html       # Tela principal da biblioteca
-├── interface.css                # Estilos da tela principal
-├── script.js                    # Cards, busca, áudio, playlist e perfil
-├── README.md                    # Documentação do projeto
-├── audio/                       # Arquivos de áudio locais
-├── imagens/                     # Capas das músicas
+├── Death-music lobby.html          # Página principal / biblioteca
+├── interface.css                  # Estilos da interface principal
+├── script.js                      # Lógica do player, busca, playlist e perfil
+├── README.md                      # Documentação do projeto
+├── audio/                         # Arquivos de áudio locais
+├── imagens/                       # Imagens e capas das músicas
 ├── cadastro e login/
-│   ├── cadastro.html            # Tela de criação de conta
+│   ├── cadastro.html              # Página de cadastro
 │   ├── cadastro.css
-│   ├── login.html               # Tela de login
+│   ├── login.html                 # Página de login
 │   ├── login.css
-│   └── google-auth.js           # Configuração do Google Identity Services
-└── cards de musicas/
-    ├── musicas.html             # Página de cards de músicas
-    └── musicas.css
+│   └── google-auth.js             # Integração com Google Identity Services
+├── cards de musicas/
+│   ├── musicas.html              # Página de cards de músicas
+│   └── musicas.css
+└── index.html                    # Arquivo principal opcional, se existir no projeto
 ```
 
-## Como abrir o projeto
+## Como executar
+
+### Opção 1: Live Server (recomendado)
 
 1. Abra a pasta do projeto no VS Code.
-2. Instale a extensão **Live Server**, caso ainda não esteja instalada.
-3. Clique com o botão direito no arquivo `Death-music lobby.html`.
-4. Selecione **Open with Live Server**. A configuração do projeto usa a porta `5501`.
+2. Instale a extensão Live Server.
+3. Clique com o botão direito em `Death-music lobby.html`.
+4. Selecione `Open with Live Server`.
 
-Se preferir, inicie um servidor local com Python:
+### Opção 2: Servidor local via Python
 
 ```bash
 python -m http.server 8000
 ```
 
-Nesse caso, acesse `http://localhost:8000/Death-music%20lobby.html` no navegador.
+Depois acesse no navegador:
 
-Use um servidor local para que os arquivos de áudio, imagens e recursos externos funcionem corretamente.
+```text
+http://localhost:8000/Death-music%20lobby.html
+```
 
-## Páginas do projeto
+> É importante usar um servidor local porque os arquivos de áudio, imagens e outros recursos podem não funcionar corretamente ao abrir diretamente no navegador.
 
-- `Death-music lobby.html`: página principal do site.
-- `cadastro e login/login.html`: página de login, acessada pelo botão **Entrar** no lobby.
-- `cadastro e login/cadastro.html`: página de criação de conta, acessada pelo link na tela de login.
-- `cards de musicas/musicas.html`: página com os cards de músicas.
+## Páginas principais
+
+- `Death-music lobby.html`: interface principal do player
+- `cadastro e login/login.html`: tela de login
+- `cadastro e login/cadastro.html`: tela de cadastro
+- `cards de musicas/musicas.html`: página de cards de música
 
 ## Como adicionar uma música
 
-As músicas que aparecem na tela principal estão no array `trackData`, dentro do arquivo `script.js`. Para adicionar outra música:
+As músicas exibidas na interface estão no array `trackData` localizado em `script.js`. Para adicionar outra faixa:
 
-1. Coloque o arquivo de áudio na pasta `audio/`.
-2. Coloque a imagem da capa na pasta `imagens/`.
-3. Adicione um objeto com `title`, `artist`, `image` e `src` ao array `trackData`.
-4. Confira se os nomes e os caminhos dos arquivos estão corretos.
+1. Coloque o arquivo de áudio na pasta `audio/`
+2. Coloque a imagem da capa na pasta `imagens/`
+3. Adicione um objeto ao array `trackData` com `title`, `artist`, `image` e `src`
 
 Exemplo:
 
 ```js
 {
-    title: 'Nome da música',
-    artist: 'Nome do artista',
-    image: 'imagens/capa.jpg',
-    src: 'audio/musica.mp3',
+  title: 'Nome da música',
+  artist: 'Nome do artista',
+  image: 'imagens/capa.jpg',
+  src: 'audio/musica.mp3',
 },
 ```
 
 ## Login com Google
 
-As páginas de login e cadastro carregam o Google Identity Services por meio de `cadastro e login/google-auth.js`. O botão só é exibido quando o Client ID está configurado:
+A integração com o Google foi iniciada em `cadastro e login/google-auth.js` e depende de um `Client ID` válido do Google Cloud.
 
-1. Crie um cliente OAuth do tipo **Aplicativo da Web** no Google Cloud Console.
-2. Adicione a origem local usada para testar, por exemplo `http://localhost:5501` com Live Server ou `http://localhost:8000` com Python, às origens JavaScript autorizadas.
-3. Substitua `YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com` pelo Client ID gerado.
+Para configurar:
 
-O script informa na tela quando falta o Client ID ou quando o SDK do Google não carrega. No estado atual, receber uma credencial do Google não conclui o login nem cria uma conta: é necessário validá-la em um backend e persistir os dados com segurança. Os formulários tradicionais também são demonstrações e não armazenam usuários ou senhas.
+1. Crie um cliente OAuth do tipo `Aplicativo da Web` no Google Cloud Console.
+2. Adicione os domínios locais do projeto, como `http://localhost:5501` ou `http://localhost:8000`.
+3. Substitua o valor de `YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com` pelo Client ID gerado.
 
-## Tecnologias usadas
+Observação: a autenticaçãoGoogle atual é apenas uma base inicial de integração. Ela não grava usuários no backend e não realiza autenticação completa sem um servidor que valide as credenciais e persista os dados.
+
+## Tecnologias utilizadas
 
 - HTML5
 - CSS3
 - JavaScript
-- API de áudio do navegador
+- Web Audio API
 - Google Identity Services
-- Font Awesome via CDN
+- Font Awesome (CDN)
 
-## O que ainda falta fazer
+## Status do projeto
 
-- Criar um backend para validar credenciais e gerenciar contas com segurança.
-- Conectar login e cadastro a um banco de dados.
-- Salvar a playlist para ela não desaparecer ao atualizar a página.
-- Melhorar a página de cards de músicas.
-- Continuar adicionando músicas e ajustando o layout.
+Este projeto ainda está em desenvolvimento. As próximas melhorias incluem:
+
+- criar um backend para autenticação real
+- conectar login e cadastro a um banco de dados
+- salvar a playlist no navegador ou em servidor
+- melhorar a organização do código e a estrutura dos arquivos
+- expandir a biblioteca de músicas e aperfeiçoar a interface
+
+## Observação
+
+Este README está sendo atualizado conforme o projeto evolui. Caso queira, posso também criar uma versão mais "profissional" com badges, seções de screenshots e instruções para deploy.
