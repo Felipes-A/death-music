@@ -136,29 +136,31 @@ const updateSearchFilter = () => {
     }
 };
 
+const setPlayButtonState = (isPlaying) => {
+    if (DOM.playButton) {
+        DOM.playButton.textContent = isPlaying ? '⏸ play' : '▶ play';
+    }
+};
+
 const updateStatus = () => {
     if (!state.playlist.length) {
         if (DOM.playlistStatus) DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
-        if (DOM.playButton) DOM.playButton.textContent = '▶ play';
+        setPlayButtonState(false);
         return;
     }
 
     const track = state.playlist[state.index];
     const statusText = state.audio.paused ? 'Pausado' : 'Tocando';
-
     if (DOM.playlistStatus) {
         DOM.playlistStatus.textContent = `${statusText}: ${track.title} — ${track.artist}`;
     }
-
-    if (DOM.playButton) {
-        DOM.playButton.textContent = state.audio.paused ? '▶ play' : '⏸ play';
-    }
+    setPlayButtonState(!state.audio.paused);
 };
 
 const stopAllCards = () => {
     cards.forEach(({ audio, button }) => {
         audio.pause();
-        button.textContent = '▶ Tocar música';
+        if (button) button.textContent = '▶ Tocar música';
     });
 };
 
@@ -287,7 +289,7 @@ const switchPlaylistTrack = (index) => {
     stopAllCards();
     state.audio.src = current.src;
     state.audio.play().catch(() => {});
-    if (DOM.playButton) DOM.playButton.textContent = '⏸ play';
+    setPlayButtonState(true);
     renderPlaylist();
 };
 
@@ -303,7 +305,7 @@ const togglePlaylist = () => {
     }
 
     state.audio.pause();
-    if (DOM.playButton) DOM.playButton.textContent = '▶ play';
+    setPlayButtonState(false);
     updateStatus();
 };
 
@@ -337,7 +339,7 @@ const removeFromPlaylist = (index) => {
     renderPlaylist();
 };
 
-DOM.addTrackButton?.addEventListener('click', () => {
+const addTrackFromPrompt = () => {
     const choice = Number(prompt(
         trackData.map((track, index) => `${index + 1}. ${track.title} — ${track.artist}`).join('\n')
     )) - 1;
@@ -348,8 +350,9 @@ DOM.addTrackButton?.addEventListener('click', () => {
     }
 
     addToPlaylist(cards[choice] || trackData[choice]);
-});
+};
 
+DOM.addTrackButton?.addEventListener('click', addTrackFromPrompt);
 DOM.playButton?.addEventListener('click', togglePlaylist);
 DOM.prevButton?.addEventListener('click', prevTrack);
 DOM.nextButton?.addEventListener('click', nextTrack);
