@@ -60,40 +60,36 @@ const state = {
 
 const cards = [];
 
-const syncProfilePhoto = (avatarUrl) => {
+const setAvatarState = (avatarUrl) => {
     const hasAvatar = Boolean(avatarUrl);
+    const avatars = [
+        [DOM.profileAvatar, DOM.profileAvatarFallback],
+        [DOM.profilePanelAvatar, DOM.profilePanelAvatarFallback],
+    ];
 
-    if (DOM.profileAvatar) {
-        DOM.profileAvatar.src = avatarUrl || '';
-        DOM.profileAvatar.hidden = !hasAvatar;
-        DOM.profileAvatar.style.display = hasAvatar ? 'block' : 'none';
-    }
+    avatars.forEach(([image, fallback]) => {
+        if (!image) return;
 
-    if (DOM.profileAvatarFallback) {
-        DOM.profileAvatarFallback.hidden = hasAvatar;
-        DOM.profileAvatarFallback.style.display = hasAvatar ? 'none' : 'flex';
-    }
+        image.src = avatarUrl || '';
+        image.hidden = !hasAvatar;
+        image.style.display = hasAvatar ? 'block' : 'none';
 
-    if (DOM.profilePanelAvatar) {
-        DOM.profilePanelAvatar.src = avatarUrl || '';
-        DOM.profilePanelAvatar.hidden = !hasAvatar;
-        DOM.profilePanelAvatar.style.display = hasAvatar ? 'block' : 'none';
-    }
-
-    if (DOM.profilePanelAvatarFallback) {
-        DOM.profilePanelAvatarFallback.hidden = hasAvatar;
-        DOM.profilePanelAvatarFallback.style.display = hasAvatar ? 'none' : 'flex';
-    }
+        if (fallback) {
+            fallback.hidden = hasAvatar;
+            fallback.style.display = hasAvatar ? 'none' : 'flex';
+        }
+    });
 };
 
 const renderProfile = () => {
     if (DOM.profileName) DOM.profileName.textContent = state.profile.name;
     if (DOM.profileEmail) DOM.profileEmail.textContent = state.profile.email;
-    syncProfilePhoto(state.profile.avatar);
+    setAvatarState(state.profile.avatar);
 };
 
 const toggleProfilePanel = () => {
     if (!DOM.profileButton || !DOM.profilePanel) return;
+
     const isHidden = DOM.profilePanel.hasAttribute('hidden');
     DOM.profilePanel.toggleAttribute('hidden', !isHidden);
     DOM.profileButton.setAttribute('aria-expanded', String(isHidden));
@@ -135,30 +131,34 @@ const updateSearchFilter = () => {
     });
 
     if (DOM.searchEmptyState) {
-        DOM.searchEmptyState.classList.toggle('visible', query && visible === 0);
+        DOM.searchEmptyState.classList.toggle('visible', !!query && visible === 0);
         DOM.searchEmptyState.textContent = 'Nenhuma música encontrada para esta busca.';
     }
 };
 
 const updateStatus = () => {
     if (!state.playlist.length) {
-        DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
-        DOM.playButton.textContent = '▶ play';
+        if (DOM.playlistStatus) DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
+        if (DOM.playButton) DOM.playButton.textContent = '▶ play';
         return;
     }
 
     const track = state.playlist[state.index];
-    DOM.playlistStatus.textContent = state.audio.paused
-        ? `Pausado: ${track.title} — ${track.artist}`
-        : `Tocando: ${track.title} — ${track.artist}`;
+    const statusText = state.audio.paused ? 'Pausado' : 'Tocando';
 
-    DOM.playButton.textContent = state.audio.paused ? '▶ play' : '⏸ play';
+    if (DOM.playlistStatus) {
+        DOM.playlistStatus.textContent = `${statusText}: ${track.title} — ${track.artist}`;
+    }
+
+    if (DOM.playButton) {
+        DOM.playButton.textContent = state.audio.paused ? '▶ play' : '⏸ play';
+    }
 };
 
 const stopAllCards = () => {
-    cards.forEach((card) => {
-        card.audio.pause();
-        card.button.textContent = '▶ Tocar música';
+    cards.forEach(({ audio, button }) => {
+        audio.pause();
+        button.textContent = '▶ Tocar música';
     });
 };
 
@@ -192,6 +192,7 @@ const bindAudioControls = ({ audio, button, progressBar, progressFilled, current
 
     progressBar?.addEventListener('click', (event) => {
         if (!audio.duration) return;
+
         const rect = progressBar.getBoundingClientRect();
         const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
         audio.currentTime = percent * audio.duration;
@@ -238,7 +239,7 @@ const createTrackCard = ({ title, artist, image, src }) => {
     bindAudioControls(track);
     track.addButton.addEventListener('click', () => addToPlaylist(track));
 
-    DOM.cardsContainer.appendChild(card);
+    DOM.cardsContainer?.appendChild(card);
     cards.push(track);
 };
 
@@ -286,7 +287,7 @@ const switchPlaylistTrack = (index) => {
     stopAllCards();
     state.audio.src = current.src;
     state.audio.play().catch(() => {});
-    DOM.playButton.textContent = '⏸ play';
+    if (DOM.playButton) DOM.playButton.textContent = '⏸ play';
     renderPlaylist();
 };
 
@@ -298,11 +299,12 @@ const togglePlaylist = () => {
 
     if (state.audio.paused) {
         switchPlaylistTrack(state.index);
-    } else {
-        state.audio.pause();
-        DOM.playButton.textContent = '▶ play';
-        updateStatus();
+        return;
     }
+
+    state.audio.pause();
+    if (DOM.playButton) DOM.playButton.textContent = '▶ play';
+    updateStatus();
 };
 
 const nextTrack = () => {
@@ -319,6 +321,7 @@ const prevTrack = () => {
 
 const removeFromPlaylist = (index) => {
     if (index < 0 || index >= state.playlist.length) return;
+
     state.playlist.splice(index, 1);
 
     if (!state.playlist.length) {
