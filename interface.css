@@ -489,20 +489,53 @@ main {
 }
 
 .track-progress {
+  position: relative;
   width: 100%;
-  height: 10px;
+  height: 8px;
   background: rgba(255,255,255,.12);
   border-radius: 999px;
   cursor: pointer;
   margin-top: 16px;
-  overflow: hidden;
+  overflow: visible;
+  touch-action: none;
+  outline: none;
+}
+
+.track-progress:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.28);
 }
 
 .track-progress-filled {
+  position: relative;
   width: 0;
   height: 100%;
   background: linear-gradient(90deg, #f2f1ee, #b8b5b1);
   transition: width 0.12s linear;
+  pointer-events: none;
+}
+
+.track-progress-filled::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transform: translate(50%, -50%);
+  transition: opacity 0.15s ease;
+}
+
+.track-progress:hover .track-progress-filled::after,
+.track-progress:focus-visible .track-progress-filled::after,
+.track-progress.is-seeking .track-progress-filled::after {
+  opacity: 1;
+}
+
+.track-progress.is-seeking .track-progress-filled {
+  transition: none;
 }
 
 .progress-info {
@@ -616,4 +649,3 @@ main {
   color: #fff;
   transform: scale(1.05);
 }
-
