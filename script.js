@@ -47,6 +47,13 @@ const trackData = [
     },
 ];
 
+const STORAGE_KEYS = {
+    users: 'deathMusicUsers',
+    currentUser: 'deathMusicCurrentUser',
+    playlist: 'deathMusicPlaylist',
+    profile: 'deathMusicProfile',
+};
+
 const state = {
     playlist: [],
     index: 0,
@@ -59,6 +66,67 @@ const state = {
 };
 
 const cards = [];
+
+const readStorage = (key, fallback = []) => {
+    try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        return JSON.parse(raw);
+    } catch (error) {
+        console.warn(`Não foi possível ler ${key} do localStorage.`, error);
+        return fallback;
+    }
+};
+
+const writeStorage = (key, value) => {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+        console.warn(`Não foi possível salvar ${key} no localStorage.`, error);
+    }
+};
+
+const loadSavedProfile = () => {
+    const currentUser = readStorage(STORAGE_KEYS.currentUser, null);
+    if (currentUser && currentUser.email) {
+        state.profile = {
+            name: currentUser.name || 'Usuário',
+            email: currentUser.email,
+            avatar: currentUser.avatar || '',
+        };
+        return;
+    }
+
+    const savedProfile = readStorage(STORAGE_KEYS.profile, null);
+    if (savedProfile) {
+        state.profile = {
+            name: savedProfile.name || 'Usuário',
+            email: savedProfile.email || 'usuario@email.com',
+            avatar: savedProfile.avatar || '',
+        };
+    }
+};
+
+const saveProfile = () => {
+    writeStorage(STORAGE_KEYS.profile, state.profile);
+    writeStorage(STORAGE_KEYS.currentUser, state.profile);
+};
+
+const loadSavedPlaylist = () => {
+    const savedPlaylist = readStorage(STORAGE_KEYS.playlist, []);
+    if (Array.isArray(savedPlaylist) && savedPlaylist.length) {
+        state.playlist = savedPlaylist.map((track) => ({
+            title: track.title,
+            artist: track.artist,
+            image: track.image || 'imagens/0x1900-000000-80-0-0.jpg',
+            src: track.src,
+        }));
+    }
+};
+
+const savePlaylist = () => {
+    writeStorage(STORAGE_KEYS.playlist, state.playlist);
+};
 
 const setAvatarState = (avatarUrl) => {
     const hasAvatar = Boolean(avatarUrl);
@@ -85,6 +153,7 @@ const renderProfile = () => {
     if (DOM.profileName) DOM.profileName.textContent = state.profile.name;
     if (DOM.profileEmail) DOM.profileEmail.textContent = state.profile.email;
     setAvatarState(state.profile.avatar);
+    saveProfile();
 };
 
 const toggleProfilePanel = () => {
@@ -272,8 +341,16 @@ const renderPlaylist = () => {
 };
 
 const addToPlaylist = (track) => {
-    state.playlist.push(track);
+    const playlistItem = {
+        title: track.title,
+        artist: track.artist,
+        image: track.image || 'imagens/0x1900-000000-80-0-0.jpg',
+        src: track.src,
+    };
+
+    state.playlist.push(playlistItem);
     if (state.playlist.length === 1) state.index = 0;
+    savePlaylist();
     renderPlaylist();
     alert(`"${track.title}" adicionada à playlist.`);
 };
@@ -291,6 +368,7 @@ const switchPlaylistTrack = (index) => {
     state.audio.play().catch(() => {});
     setPlayButtonState(true);
     renderPlaylist();
+    savePlaylist();
 };
 
 const togglePlaylist = () => {
@@ -329,6 +407,7 @@ const removeFromPlaylist = (index) => {
     if (!state.playlist.length) {
         state.audio.pause();
         state.index = 0;
+        savePlaylist();
         renderPlaylist();
         return;
     }
@@ -336,6 +415,7 @@ const removeFromPlaylist = (index) => {
     if (state.index >= state.playlist.length) state.index = state.playlist.length - 1;
     if (state.index > index) state.index -= 1;
 
+    savePlaylist();
     renderPlaylist();
 };
 
@@ -349,7 +429,13 @@ const addTrackFromPrompt = () => {
         return;
     }
 
-    addToPlaylist(cards[choice] || trackData[choice]);
+    const selectedTrack = trackData[choice];
+    addToPlaylist({
+        title: selectedTrack.title,
+        artist: selectedTrack.artist,
+        image: selectedTrack.image,
+        src: selectedTrack.src,
+    });
 };
 
 DOM.addTrackButton?.addEventListener('click', addTrackFromPrompt);
@@ -373,6 +459,8 @@ document.addEventListener('click', (event) => {
     }
 });
 
+loadSavedProfile();
+loadSavedPlaylist();
 renderProfile();
 if (DOM.cardsContainer) {
     trackData.forEach(createTrackCard);
