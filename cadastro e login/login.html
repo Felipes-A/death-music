@@ -32,5 +32,62 @@
         </form>
     </div>
     <script src="google-auth.js"></script>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginMessage = document.getElementById('mensagem');
+
+        const setLoginMessage = (message, isError = false) => {
+            if (!loginMessage) return;
+            loginMessage.textContent = message;
+            loginMessage.style.display = 'block';
+            loginMessage.style.background = isError ? '#ffe6e6' : '#e9ffe9';
+            loginMessage.style.color = isError ? '#b00020' : '#0d6b3d';
+            loginMessage.style.border = isError ? '1px solid #f5b3b3' : '1px solid #9ad8b1';
+        };
+
+        const getUsers = () => {
+            try {
+                return JSON.parse(localStorage.getItem('deathMusicUsers') || '[]');
+            } catch (error) {
+                return [];
+            }
+        };
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!email || !password) {
+                    setLoginMessage('Preencha e-mail e senha antes de entrar.', true);
+                    return;
+                }
+
+                const users = getUsers();
+                const user = users.find((item) => item.email.toLowerCase() === email.toLowerCase());
+
+                if (!user) {
+                    setLoginMessage('Nenhuma conta encontrada com esse e-mail. Cadastre-se primeiro.', true);
+                    return;
+                }
+
+                if (user.password !== password) {
+                    setLoginMessage('Senha incorreta. Tente novamente.', true);
+                    return;
+                }
+
+                localStorage.setItem('deathMusicCurrentUser', JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar || '',
+                }));
+
+                setLoginMessage('Login realizado com sucesso! Redirecionando...');
+                window.location.href = '../Death-music lobby.html';
+            });
+        }
+    </script>
 </body>
 </html>
