@@ -247,6 +247,7 @@ const bindAudioControls = ({ audio, button, progressBar, progressFilled, current
         progressBar?.setAttribute('aria-valuemax', String(Math.floor(duration)));
         progressBar?.setAttribute('aria-valuenow', String(Math.floor(time)));
         progressBar?.setAttribute('aria-valuetext', `${fmtTime(time)} de ${fmtTime(duration)}`);
+        progressBar?.setAttribute('aria-disabled', String(duration <= 0));
     };
 
     const seekToPointer = (event) => {
@@ -261,6 +262,11 @@ const bindAudioControls = ({ audio, button, progressBar, progressFilled, current
     };
 
     audio.addEventListener('loadedmetadata', () => {
+        durationTime.textContent = fmtTime(audio.duration);
+        updateProgress();
+    });
+
+    audio.addEventListener('durationchange', () => {
         durationTime.textContent = fmtTime(audio.duration);
         updateProgress();
     });
@@ -349,7 +355,7 @@ const createTrackCard = ({ title, artist, image, src }) => {
         <div class="button-group">
             <button class="botaoPlay" type="button">▶ Tocar música</button>
             <button class="btn-add-playlist" type="button">+ Playlist</button>
-            <audio class="musica" preload="none" loop>
+            <audio class="musica" preload="metadata" loop>
                 <source src="${src}" type="audio/mpeg">
             </audio>
         </div>
@@ -357,7 +363,7 @@ const createTrackCard = ({ title, artist, image, src }) => {
             <span class="current-time">0:00</span>
             <span class="duration-time">0:00</span>
         </div>
-        <div class="track-progress" role="slider" tabindex="0" aria-label="Progresso da música" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00 de 0:00">
+        <div class="track-progress" role="slider" tabindex="0" aria-label="Progresso da música" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00 de 0:00" aria-disabled="true">
             <div class="track-progress-filled"></div>
         </div>
     `;
