@@ -39,6 +39,54 @@
   </form>
 </div>
 <script src="google-auth.js"></script>
+<script>
+    const cadastroForm = document.querySelector('form');
+
+    if (cadastroForm) {
+        cadastroForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+
+            if (!nome || !email || !senha) {
+                alert('Preencha todos os campos antes de continuar.');
+                return;
+            }
+
+            if (senha.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('deathMusicUsers') || '[]');
+            const emailJaExiste = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
+
+            if (emailJaExiste) {
+                alert('Este e-mail já está cadastrado. Faça login ou use outro e-mail.');
+                return;
+            }
+
+            users.push({
+                name: nome,
+                email,
+                password: senha,
+                avatar: '',
+            });
+
+            localStorage.setItem('deathMusicUsers', JSON.stringify(users));
+            localStorage.setItem('deathMusicCurrentUser', JSON.stringify({
+                name: nome,
+                email,
+                avatar: '',
+            }));
+
+            alert('Cadastro realizado com sucesso!');
+            window.location.href = '../Death-music lobby.html';
+        });
+    }
+</script>
 </body>
 
 </html>
