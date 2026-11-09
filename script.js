@@ -234,19 +234,44 @@ const stopAllCards = () => {
 };
 
 const bindAudioControls = ({ audio, button, progressBar, progressFilled, currentTime, durationTime }) => {
+    let activePointerId = null;
+
+    const updateProgress = () => {
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        const time = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+        const percent = duration > 0 ? Math.min((time / duration) * 100, 100) : 0;
+
+        currentTime.textContent = fmtTime(time);
+        progressFilled.style.width = `${percent}%`;
+        progressBar?.setAttribute('aria-valuemin', '0');
+        progressBar?.setAttribute('aria-valuemax', String(Math.floor(duration)));
+        progressBar?.setAttribute('aria-valuenow', String(Math.floor(time)));
+        progressBar?.setAttribute('aria-valuetext', `${fmtTime(time)} de ${fmtTime(duration)}`);
+    };
+
+    const seekToPointer = (event) => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+
+        const rect = progressBar.getBoundingClientRect();
+        if (!rect.width) return;
+
+        const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+        audio.currentTime = percent * audio.duration;
+        updateProgress();
+    };
+
     audio.addEventListener('loadedmetadata', () => {
         durationTime.textContent = fmtTime(audio.duration);
+        updateProgress();
     });
 
     audio.addEventListener('timeupdate', () => {
-        currentTime.textContent = fmtTime(audio.currentTime);
-        if (audio.duration) {
-            progressFilled.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-        }
+        updateProgress();
     });
 
     audio.addEventListener('ended', () => {
         button.textContent = '▶ Tocar música';
+        updateProgress();
     });
 
     button.addEventListener('click', () => {
@@ -261,12 +286,55 @@ const bindAudioControls = ({ audio, button, progressBar, progressFilled, current
         button.textContent = '⏸ Pausar';
     });
 
-    progressBar?.addEventListener('click', (event) => {
-        if (!audio.duration) return;
+    progressBar?.addEventListener('pointerdown', (event) => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
 
-        const rect = progressBar.getBoundingClientRect();
-        const percent = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
-        audio.currentTime = percent * audio.duration;
+        activePointerId = event.pointerId;
+        progressBar.setPointerCapture(event.pointerId);
+        progressBar.classList.add('is-seeking');
+        seekToPointer(event);
+        event.preventDefault();
+    });
+
+    progressBar?.addEventListener('pointermove', (event) => {
+        if (event.pointerId === activePointerId) seekToPointer(event);
+    });
+
+    const stopSeeking = (event) => {
+        if (event.pointerId !== activePointerId) return;
+        activePointerId = null;
+        progressBar.classList.remove('is-seeking');
+    };
+
+    progressBar?.addEventListener('pointerup', stopSeeking);
+    progressBar?.addEventListener('pointercancel', stopSeeking);
+
+    progressBar?.addEventListener('keydown', (event) => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+
+        const step = event.shiftKey ? 10 : 5;
+        let nextTime;
+
+        switch (event.key) {
+            case 'ArrowLeft':
+                nextTime = audio.currentTime - step;
+                break;
+            case 'ArrowRight':
+                nextTime = audio.currentTime + step;
+                break;
+            case 'Home':
+                nextTime = 0;
+                break;
+            case 'End':
+                nextTime = audio.duration;
+                break;
+            default:
+                return;
+        }
+
+        event.preventDefault();
+        audio.currentTime = Math.min(Math.max(nextTime, 0), audio.duration);
+        updateProgress();
     });
 };
 
@@ -289,7 +357,7 @@ const createTrackCard = ({ title, artist, image, src }) => {
             <span class="current-time">0:00</span>
             <span class="duration-time">0:00</span>
         </div>
-        <div class="track-progress" role="button" tabindex="0" aria-label="Progresso da música">
+        <div class="track-progress" role="slider" tabindex="0" aria-label="Progresso da música" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00 de 0:00">
             <div class="track-progress-filled"></div>
         </div>
     `;
