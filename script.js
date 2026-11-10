@@ -214,8 +214,14 @@ const setPlayButtonState = (isPlaying) => {
 const updateStatus = () => {
     if (!state.playlist.length) {
         if (DOM.playlistStatus) DOM.playlistStatus.textContent = 'Nenhuma música na playlist.';
+        state.audio.pause();
+        state.audio.src = '';
         setPlayButtonState(false);
         return;
+    }
+
+    if (state.index < 0 || state.index >= state.playlist.length) {
+        state.index = 0;
     }
 
     const track = state.playlist[state.index];
@@ -398,7 +404,7 @@ const renderPlaylist = () => {
                 <button type="button" data-remove="${index}">Excluir</button>
             </li>
         `).join('')
-        : '<li>A playlist está vazia.</li>';
+        : '<li class="playlist-empty">A playlist está vazia.</li>';
 
     DOM.playlistElement.querySelectorAll('[data-index]').forEach((item) => {
         item.addEventListener('click', () => switchPlaylistTrack(Number(item.dataset.index)));
@@ -414,6 +420,18 @@ const renderPlaylist = () => {
     updateStatus();
 };
 
+const trackAlreadyExists = (newTrack) => {
+    const normalizedNew = {
+        title: normalizeText(newTrack.title),
+        artist: normalizeText(newTrack.artist),
+    };
+
+    return state.playlist.some((track) => (
+        normalizeText(track.title) === normalizedNew.title &&
+        normalizeText(track.artist) === normalizedNew.artist
+    ));
+};
+
 const addToPlaylist = (track) => {
     const playlistItem = {
         title: track.title,
@@ -421,6 +439,11 @@ const addToPlaylist = (track) => {
         image: track.image || 'imagens/0x1900-000000-80-0-0.jpg',
         src: track.src,
     };
+
+    if (trackAlreadyExists(playlistItem)) {
+        alert(`"${track.title}" já está na playlist.`);
+        return;
+    }
 
     state.playlist.push(playlistItem);
     if (state.playlist.length === 1) state.index = 0;
@@ -439,6 +462,8 @@ const switchPlaylistTrack = (index) => {
     const current = state.playlist[state.index];
     stopAllCards();
     state.audio.src = current.src;
+    state.audio.load();
+    state.audio.currentTime = 0;
     state.audio.play().catch(() => {});
     setPlayButtonState(true);
     renderPlaylist();
@@ -480,6 +505,8 @@ const removeFromPlaylist = (index) => {
 
     if (!state.playlist.length) {
         state.audio.pause();
+        state.audio.src = '';
+        state.audio.currentTime = 0;
         state.index = 0;
         savePlaylist();
         renderPlaylist();
