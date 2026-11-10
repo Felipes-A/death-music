@@ -342,6 +342,13 @@ main {
   border: 1px solid rgba(255,255,255,.04);
 }
 
+.nav-playlist li.playlist-empty {
+  justify-content: center;
+  color: var(--muted);
+  font-size: 13px;
+  background: rgba(255,255,255,.02);
+}
+
 .nav-playlist li.active {
   background: rgba(255,255,255,.09);
   border: 1px solid rgba(255,255,255,.18);
@@ -352,6 +359,7 @@ main {
   text-align: left;
   color: #fff;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .nav-playlist li button {
