@@ -626,6 +626,96 @@ main {
   border: 1px solid rgba(255,255,255,.08);
 }
 
+.nav-playlist button:hover,
+.nav-playlist li button:hover,
+.profile-photo-button:hover,
+.botaoPlay:hover,
+.btn-add-playlist:hover,
+.add-empty-player-btn:hover,
+.auth-link:hover,
+.nav-lang-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.header-search input:focus,
+.profile-button:focus-visible,
+.auth-link:focus-visible,
+.nav-lang-button:focus-visible,
+.botaoPlay:focus-visible,
+.btn-add-playlist:focus-visible,
+.profile-photo-button:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.45);
+  outline-offset: 2px;
+}
+
+@media (max-width: 980px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    padding-bottom: 30px;
+  }
+
+  .top-header,
+  .cards-container,
+  .content,
+  .cards-actions {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cards-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .top-header {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 16px 0;
+  }
+
+  .header-search {
+    order: 1;
+    width: 100%;
+  }
+
+  .auth-link {
+    order: 2;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .profile-menu-wrap {
+    order: 3;
+    margin-left: 0;
+  }
+
+  .cards-container {
+    padding: 12px;
+    gap: 18px;
+  }
+
+  .player-container {
+    width: min(100%, 300px);
+  }
+
+  .nav-playlist .playlist-controls {
+    flex-direction: column;
+  }
+
+  .nav-playlist .playlist-controls button {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
 .download-progress {
   width: 100%;
   height: 8px;
