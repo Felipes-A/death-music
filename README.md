@@ -32,6 +32,9 @@ Death-music/
 ├── Death-music lobby.html          # Página principal da biblioteca e player
 ├── interface.css                   # Estilos da interface principal
 ├── script.js                       # Lógica do player, busca, playlist e perfil
+├── server.js                       # Rotas da API, autenticação e banco SQLite
+├── package.json                    # Dependências e comando para iniciar o servidor
+├── .gitignore                      # Arquivos locais que não entram no Git
 ├── README.md                       # Documentação do projeto
 ├── audio/                          # Arquivos de áudio usados no player
 ├── imagens/                        # Imagens das capas e logo do projeto
@@ -40,6 +43,7 @@ Death-music/
 │   ├── cadastro.css               # Estilos da tela de cadastro
 │   ├── login.html                 # Página de login
 │   ├── login.css                  # Estilos da tela de login
+│   ├── auth.js                    # Envio de cadastro e login para a API
 │   └── google-auth.js             # Inicialização do Google Identity Services
 ├── cards de musicas/               # Pasta reservada para futuras telas ou componentes
 └── .vscode/
@@ -50,26 +54,25 @@ Death-music/
 
 ## Como abrir o projeto
 
-### Opção 1: usando Live Server
+O cadastro, o login e o salvamento por usuário precisam do servidor Node.js. Para executar:
 
-1. Abra a pasta do projeto no VS Code.
-2. Instale a extensão Live Server.
-3. Clique com o botão direito no arquivo `Death-music lobby.html`.
-4. Selecione `Open with Live Server`.
-
-### Opção 2: usando Python
+1. Instale o Node.js 20 ou mais recente.
+2. Abra um terminal na pasta do projeto.
+3. Instale as dependências:
 
 ```bash
-python -m http.server 8000
+npm install
 ```
 
-Depois é só abrir no navegador:
+4. Inicie o servidor:
 
-```text
-http://localhost:8000/Death-music%20lobby.html
+```bash
+npm start
 ```
 
-> Eu usei um servidor local porque alguns arquivos de áudio e imagem podem não funcionar direito se abrir direto no navegador.
+Abra o endereço mostrado no terminal (por padrão `http://localhost:3000`). O banco SQLite é criado automaticamente em `data/death-music.sqlite`.
+
+> Não abra as páginas com Live Server ou diretamente pelo arquivo: nesse caso, as rotas do backend não estarão disponíveis.
 
 ## Páginas principais
 
@@ -99,13 +102,11 @@ Exemplo:
 
 ## Login e cadastro
 
-A parte de cadastro e login foi feita de forma simples usando `localStorage`, então os dados ficam salvos no navegador do usuário. Isso foi bem útil para testar a funcionalidade, mas não é uma autenticação de verdade para produção.
-
-A lógica está em `cadastro e login/login.html` e `cadastro e login/cadastro.html`, e o comportamento foi feito em JavaScript direto no HTML.
+Cadastro e login são enviados para o backend em `server.js`. As senhas são armazenadas com hash, e a sessão usa um cookie HTTP-only. O banco SQLite guarda as contas, as fotos de perfil e as playlists separadamente por usuário. A playlist de quem não está conectado continua sendo salva no navegador.
 
 ## Login com Google
 
-A parte de Google foi iniciada no arquivo `cadastro e login/google-auth.js`. Ele carrega o Google Identity Services e mostra o botão de login, mas ainda não conclui a autenticação completa porque precisa de um backend para validar o token e salvar os dados corretamente.
+A parte de Google foi iniciada no arquivo `cadastro e login/google-auth.js`. Ela ainda não conclui a autenticação: falta configurar um Client ID e validar a credencial do Google no servidor.
 
 Para isso funcionar de verdade, seria necessário:
 
@@ -122,8 +123,10 @@ Então, por enquanto, essa parte está mais como uma base para continuar no futu
 - HTML5
 - CSS3
 - JavaScript
+- Node.js e Express
+- SQLite (`better-sqlite3`)
 - API de áudio do navegador
-- LocalStorage
+- LocalStorage para visitantes
 - Google Identity Services
 - Font Awesome via CDN
 
@@ -131,9 +134,9 @@ Então, por enquanto, essa parte está mais como uma base para continuar no futu
 
 Ainda tem várias coisas para melhorar, e eu estou aprendendo no processo. Alguns pontos que ainda preciso desenvolver são:
 
-- backend para autenticação real
-- banco de dados para salvar usuários
-- playlist mais persistente e melhor organizada
+- recuperação de senha
+- configurar a validação de login com Google
+- melhorias na organização das playlists
 - melhoria na organização do código
 - mais músicas e ajustes no layout
 - deixar a aplicação mais completa e funcional no geral
