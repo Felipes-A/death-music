@@ -13,7 +13,7 @@
             <img src="../imagens/felipe logo principal.jpeg" alt="Death Music logo">
         </div>
         <h2>Login</h2>
-        <form id="loginForm" action="../Death-music lobby.html" method="get">
+        <form id="loginForm">
             <div class="input-group">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" placeholder="email" required>
@@ -22,7 +22,7 @@
                 <label for="password">Senha</label>
                 <input type="password" id="password" name="password" placeholder="senha" required>
             </div>
-            <div id="mensagem" style="margin-top: 10px; padding: 10px; display: none; border-radius: 5px;"></div>
+            <p id="auth-message" role="status" aria-live="polite" hidden></p>
             <div class="google-signin-container">
                 <div id="google-signin-button"></div>
                 <p id="google-auth-status" class="google-auth-status" role="status" aria-live="polite"></p>
@@ -32,62 +32,6 @@
         </form>
     </div>
     <script src="google-auth.js"></script>
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const loginMessage = document.getElementById('mensagem');
-
-        const setLoginMessage = (message, isError = false) => {
-            if (!loginMessage) return;
-            loginMessage.textContent = message;
-            loginMessage.style.display = 'block';
-            loginMessage.style.background = isError ? '#ffe6e6' : '#e9ffe9';
-            loginMessage.style.color = isError ? '#b00020' : '#0d6b3d';
-            loginMessage.style.border = isError ? '1px solid #f5b3b3' : '1px solid #9ad8b1';
-        };
-
-        const getUsers = () => {
-            try {
-                return JSON.parse(localStorage.getItem('deathMusicUsers') || '[]');
-            } catch (error) {
-                return [];
-            }
-        };
-
-        if (loginForm) {
-            loginForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value.trim();
-
-                if (!email || !password) {
-                    setLoginMessage('Preencha e-mail e senha antes de entrar.', true);
-                    return;
-                }
-
-                const users = getUsers();
-                const user = users.find((item) => item.email.toLowerCase() === email.toLowerCase());
-
-                if (!user) {
-                    setLoginMessage('Nenhuma conta encontrada com esse e-mail. Cadastre-se primeiro.', true);
-                    return;
-                }
-
-                if (user.password !== password) {
-                    setLoginMessage('Senha incorreta. Tente novamente.', true);
-                    return;
-                }
-
-                localStorage.setItem('deathMusicCurrentUser', JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    avatar: user.avatar || '',
-                }));
-
-                setLoginMessage('Login realizado com sucesso! Redirecionando...');
-                window.location.href = '../Death-music lobby.html';
-            });
-        }
-    </script>
+    <script src="auth.js"></script>
 </body>
 </html>
