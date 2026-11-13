@@ -8,6 +8,7 @@ const DOM = {
     cardsContainer: document.querySelector('.cards-container'),
     searchInput: document.getElementById('search-input'),
     searchEmptyState: document.getElementById('search-empty-state'),
+    authLink: document.querySelector('.auth-link'),
     profileButton: document.getElementById('profile-button'),
     profilePanel: document.getElementById('profile-panel'),
     profileName: document.getElementById('profile-name'),
@@ -48,8 +49,6 @@ const trackData = [
 ];
 
 const STORAGE_KEYS = {
-    users: 'deathMusicUsers',
-    currentUser: 'deathMusicCurrentUser',
     playlist: 'deathMusicPlaylist',
     profile: 'deathMusicProfile',
 };
@@ -57,6 +56,7 @@ const STORAGE_KEYS = {
 const state = {
     playlist: [],
     index: 0,
+    authenticated: false,
     audio: new Audio(),
     profile: {
         name: 'Usuário',
@@ -86,17 +86,26 @@ const writeStorage = (key, value) => {
     }
 };
 
-const loadSavedProfile = () => {
-    const currentUser = readStorage(STORAGE_KEYS.currentUser, null);
-    if (currentUser && currentUser.email) {
-        state.profile = {
-            name: currentUser.name || 'Usuário',
-            email: currentUser.email,
-            avatar: currentUser.avatar || '',
-        };
-        return;
-    }
+const apiRequest = async (url, options = {}) => {
+    const response = await fetch(url, {
+        ...options,
+        credentials: 'same-origin',
+        headers: {
+            ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+            ...options.headers,
+        },
+    });
+    const result = await response.json();
 
+    if (!response.ok) {
+        const error = new Error(result.error || 'Não foi possível concluir a solicitação.');
+        error.status = response.status;
+        throw error;
+    }
+    return result;
+};
+
+const loadSavedProfile = () => {
     const savedProfile = readStorage(STORAGE_KEYS.profile, null);
     if (savedProfile) {
         state.profile = {
@@ -107,9 +116,20 @@ const loadSavedProfile = () => {
     }
 };
 
-const saveProfile = () => {
-    writeStorage(STORAGE_KEYS.profile, state.profile);
-    writeStorage(STORAGE_KEYS.currentUser, state.profile);
+const saveProfile = async () => {
+    if (!state.authenticated) {
+        writeStorage(STORAGE_KEYS.profile, state.profile);
+        return;
+    }
+
+    try {
+        await apiRequest('/api/profile', {
+            method: 'PUT',
+            body: JSON.stringify({ avatar: state.profile.avatar }),
+        });
+    } catch (error) {
+        alert(error.message);
+    }
 };
 
 const loadSavedPlaylist = () => {
@@ -124,8 +144,20 @@ const loadSavedPlaylist = () => {
     }
 };
 
-const savePlaylist = () => {
-    writeStorage(STORAGE_KEYS.playlist, state.playlist);
+const savePlaylist = async () => {
+    if (!state.authenticated) {
+        writeStorage(STORAGE_KEYS.playlist, state.playlist);
+        return;
+    }
+
+    try {
+        await apiRequest('/api/playlist', {
+            method: 'PUT',
+            body: JSON.stringify({ playlist: state.playlist }),
+        });
+    } catch (error) {
+        alert(error.message);
+    }
 };
 
 const setAvatarState = (avatarUrl) => {
@@ -153,7 +185,6 @@ const renderProfile = () => {
     if (DOM.profileName) DOM.profileName.textContent = state.profile.name;
     if (DOM.profileEmail) DOM.profileEmail.textContent = state.profile.email;
     setAvatarState(state.profile.avatar);
-    saveProfile();
 };
 
 const toggleProfilePanel = () => {
@@ -165,8 +196,9 @@ const toggleProfilePanel = () => {
 };
 
 const updateProfileFromFile = (file) => {
-    if (!file || !file.type.startsWith('image/')) {
-        alert('Selecione uma imagem válida para o perfil.');
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+    if (!file || !allowedTypes.includes(file.type) || file.size > 1500 * 1024) {
+        alert('Selecione uma imagem PNG, JPEG, WebP ou GIF de até 1,5 MB.');
         return;
     }
 
@@ -174,6 +206,7 @@ const updateProfileFromFile = (file) => {
     reader.onload = (event) => {
         state.profile.avatar = String(event.target?.result || '');
         renderProfile();
+        saveProfile();
     };
     reader.readAsDataURL(file);
 };
@@ -397,25 +430,31 @@ const createTrackCard = ({ title, artist, image, src }) => {
 const renderPlaylist = () => {
     if (!DOM.playlistElement) return;
 
-    DOM.playlistElement.innerHTML = state.playlist.length
-        ? state.playlist.map((track, index) => `
-            <li class="playlist-item${index === state.index ? ' active' : ''}">
-                <span data-index="${index}">${track.title} — ${track.artist}</span>
-                <button type="button" data-remove="${index}">Excluir</button>
-            </li>
-        `).join('')
-        : '<li class="playlist-empty">A playlist está vazia.</li>';
+    DOM.playlistElement.replaceChildren();
 
-    DOM.playlistElement.querySelectorAll('[data-index]').forEach((item) => {
-        item.addEventListener('click', () => switchPlaylistTrack(Number(item.dataset.index)));
-    });
+    if (!state.playlist.length) {
+        const emptyItem = document.createElement('li');
+        emptyItem.className = 'playlist-empty';
+        emptyItem.textContent = 'A playlist está vazia.';
+        DOM.playlistElement.appendChild(emptyItem);
+    } else {
+        state.playlist.forEach((track, index) => {
+            const item = document.createElement('li');
+            item.className = `playlist-item${index === state.index ? ' active' : ''}`;
 
-    DOM.playlistElement.querySelectorAll('[data-remove]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            removeFromPlaylist(Number(button.dataset.remove));
+            const title = document.createElement('span');
+            title.textContent = `${track.title} — ${track.artist}`;
+            title.addEventListener('click', () => switchPlaylistTrack(index));
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = 'Excluir';
+            removeButton.addEventListener('click', () => removeFromPlaylist(index));
+
+            item.append(title, removeButton);
+            DOM.playlistElement.appendChild(item);
         });
-    });
+    }
 
     updateStatus();
 };
@@ -539,6 +578,57 @@ const addTrackFromPrompt = () => {
     });
 };
 
+const setAuthenticatedHeader = (isAuthenticated) => {
+    if (!DOM.authLink) return;
+
+    const label = DOM.authLink.querySelector('#auth-label');
+    if (label) label.textContent = isAuthenticated ? 'Sair' : 'Entrar';
+    DOM.authLink.href = isAuthenticated ? '#' : 'cadastro e login/login.html';
+};
+
+const loadBackendSession = async () => {
+    try {
+        const { user } = await apiRequest('/api/me');
+        const { playlist } = await apiRequest('/api/playlist');
+        state.authenticated = true;
+        state.profile = {
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar || '',
+        };
+        state.playlist = playlist;
+        state.index = 0;
+        setAuthenticatedHeader(true);
+        renderProfile();
+        renderPlaylist();
+    } catch (error) {
+        if (error.status !== 401) {
+            console.error('Não foi possível carregar a conta do servidor.', error);
+        }
+    }
+};
+
+DOM.authLink?.addEventListener('click', async (event) => {
+    if (!state.authenticated) return;
+    event.preventDefault();
+
+    try {
+        await apiRequest('/api/auth/logout', { method: 'POST' });
+        state.authenticated = false;
+        state.profile = { name: 'Usuário', email: 'usuario@email.com', avatar: '' };
+        state.playlist = [];
+        state.index = 0;
+        localStorage.removeItem('deathMusicCurrentUser');
+        writeStorage(STORAGE_KEYS.playlist, []);
+        writeStorage(STORAGE_KEYS.profile, state.profile);
+        setAuthenticatedHeader(false);
+        renderProfile();
+        renderPlaylist();
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
 DOM.addTrackButton?.addEventListener('click', addTrackFromPrompt);
 DOM.playButton?.addEventListener('click', togglePlaylist);
 DOM.prevButton?.addEventListener('click', prevTrack);
@@ -568,3 +658,4 @@ if (DOM.cardsContainer) {
     updateSearchFilter();
 }
 renderPlaylist();
+loadBackendSession();
