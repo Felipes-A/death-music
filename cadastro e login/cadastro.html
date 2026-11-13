@@ -13,7 +13,7 @@
     <img src="../imagens/felipe logo principal.jpeg" alt="Death Music logo">
   </div>
   <h2>Criar Conta</h2>
-  <form action="../Death-music lobby.html" method="get">
+  <form>
     <div class="campo-form">
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
@@ -34,59 +34,13 @@
       <p id="google-auth-status" class="google-auth-status" role="status" aria-live="polite"></p>
     </div>
 
+    <p id="auth-message" role="status" aria-live="polite" hidden></p>
     <button type="submit" class="botao-vermelho">Cadastrar</button>
     <p class="login-link">Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
   </form>
 </div>
 <script src="google-auth.js"></script>
-<script>
-    const cadastroForm = document.querySelector('form');
-
-    if (cadastroForm) {
-        cadastroForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const nome = document.getElementById('nome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const senha = document.getElementById('senha').value.trim();
-
-            if (!nome || !email || !senha) {
-                alert('Preencha todos os campos antes de continuar.');
-                return;
-            }
-
-            if (senha.length < 6) {
-                alert('A senha deve ter pelo menos 6 caracteres.');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('deathMusicUsers') || '[]');
-            const emailJaExiste = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
-
-            if (emailJaExiste) {
-                alert('Este e-mail já está cadastrado. Faça login ou use outro e-mail.');
-                return;
-            }
-
-            users.push({
-                name: nome,
-                email,
-                password: senha,
-                avatar: '',
-            });
-
-            localStorage.setItem('deathMusicUsers', JSON.stringify(users));
-            localStorage.setItem('deathMusicCurrentUser', JSON.stringify({
-                name: nome,
-                email,
-                avatar: '',
-            }));
-
-            alert('Cadastro realizado com sucesso!');
-            window.location.href = '../Death-music lobby.html';
-        });
-    }
-</script>
+<script src="auth.js"></script>
 </body>
 
 </html>
